@@ -1,0 +1,4 @@
+com\imooc\controller\PassportController.class
+com\imooc\ApiApplication.class
+com\imooc\controller\HelloController.class
+com\imooc\controller\StuFooController.class
