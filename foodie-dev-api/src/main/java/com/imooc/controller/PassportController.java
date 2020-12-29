@@ -39,7 +39,9 @@ public class PassportController {
             return IMOOCJSONResult.errorMsg("用户名或密码不能为空！");
         }
         boolean isExist = userService.queryUsernameIsExist(username);
-        return isExist == true ? IMOOCJSONResult.errorMsg("用户名已存在！") : IMOOCJSONResult.ok();
+        if (isExist){
+            return IMOOCJSONResult.errorMsg("用户名已存在！");
+        }
         if(password.length() < 6 || confirmPassword.length() < 6){
             return IMOOCJSONResult.errorMsg("密码长度不能小于6位！");
         }

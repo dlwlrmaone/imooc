@@ -63,7 +63,7 @@ public class UserServiceImpl implements UserService {
         //默认头像
         users.setFace(USER_FACE_URL);
         //默认生日
-        users.setBirthday(DateUtil.stringToDate("1900-01-01");
+        users.setBirthday(DateUtil.stringToDate("1900-01-01"));
         //默认性别为保密，使用枚举类来表示
         users.setSex(Sex.secret.type);
         users.setCreatedTime(new Date());
