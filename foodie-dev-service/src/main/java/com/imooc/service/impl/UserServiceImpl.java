@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -72,5 +73,20 @@ public class UserServiceImpl implements UserService {
         usersMapper.insert(users);
 
         return users;
+    }
+
+    @Transactional(propagation = Propagation.SUPPORTS)
+    @Override
+    public Users userLogin(String username, String password) {
+
+        //创建查询实例对象
+        Example userExample = new Example(Users.class);
+        //构建查询条件
+        Example.Criteria userCriteria = userExample.createCriteria();
+        userCriteria.andEqualTo("username",username);
+        userCriteria.andEqualTo("password",password);
+
+        Users user = usersMapper.selectOneByExample(userExample);
+        return user;
     }
 }

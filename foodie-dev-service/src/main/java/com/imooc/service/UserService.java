@@ -29,6 +29,6 @@ public interface UserService {
      * @param password
      * @return
      */
-    Users UsersLogin(String username,String password);
+    Users userLogin(String username,String password);
 
 }
