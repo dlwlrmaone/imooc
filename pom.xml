@@ -68,8 +68,8 @@
             <optional>true</optional>
         </dependency>
         <!-- mysql驱动 -->
-        <!--            本地使用的是8.x版本，和5.x密码规则不同-->
-        <!--            <version>5.1.41</version>-->
+        <!-- 本地使用的是8.x版本，和5.x密码规则不同-->
+        <!-- <version>5.1.41</version>-->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
@@ -119,6 +119,18 @@
             <artifactId>swagger-bootstrap-ui</artifactId>
             <version>1.6</version>
         </dependency>
+<!--        &lt;!&ndash;日志依赖抽象层&ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>org.slf4j</groupId>-->
+<!--            <artifactId>slf4j-api</artifactId>-->
+<!--            <version>1.7.21</version>-->
+<!--        </dependency>-->
+<!--        &lt;!&ndash;日志依赖实现层&ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>org.slf4j</groupId>-->
+<!--            <artifactId>slf4j-log4j12</artifactId>-->
+<!--            <version>1.7.21</version>-->
+<!--        </dependency>-->
     </dependencies>
 
 </project>

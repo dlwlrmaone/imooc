@@ -3,13 +3,18 @@ package com.imooc.controller;
 import com.imooc.pojo.Users;
 import com.imooc.pojo.bo.UserBO;
 import com.imooc.service.UserService;
+import com.imooc.utils.CookieUtils;
 import com.imooc.utils.IMOOCJSONResult;
+import com.imooc.utils.JsonUtils;
 import com.imooc.utils.MD5Utils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 @Api(value = "注册登录",tags = "用于注册登录的相关接口")
 @RestController
@@ -35,7 +40,7 @@ public class PassportController {
     @ApiOperation(value = "用户注册",notes = "用户注册及校验",httpMethod = "POST")
     @PostMapping("/register")
     //RequestBody常用于接收json数据
-    public IMOOCJSONResult register(@RequestBody UserBO userBO){
+    public IMOOCJSONResult register(@RequestBody UserBO userBO,HttpServletRequest request,HttpServletResponse response){
 
         String username = userBO.getUsername();
         String password = userBO.getPassword();
@@ -57,7 +62,9 @@ public class PassportController {
         }
 
         //实现注册
-        userService.createUser(userBO);
+        Users userResult = userService.createUser(userBO);
+        userResult = setUserNullProp(userResult);
+        CookieUtils.setCookie(request,response,"user", JsonUtils.objectToJson(userResult),true);
 
         return IMOOCJSONResult.ok();
 
@@ -66,7 +73,7 @@ public class PassportController {
     @ApiOperation(value = "用户登录",notes = "用户登录及校验",httpMethod = "POST")
     @PostMapping("/userLogin")
     //RequestBody常用于接收json数据
-    public IMOOCJSONResult userLogin(@RequestBody UserBO userBO) throws Exception {
+    public IMOOCJSONResult userLogin(@RequestBody UserBO userBO, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         String username = userBO.getUsername();
         String password = userBO.getPassword();
@@ -81,8 +88,25 @@ public class PassportController {
         if (userResult == null){
             return IMOOCJSONResult.errorMsg("用户名或密码不正确！");
         }
+        userResult = setUserNullProp(userResult);
+        CookieUtils.setCookie(request,response,"user", JsonUtils.objectToJson(userResult),true);
 
         return IMOOCJSONResult.ok(userResult);
+    }
 
+    /**
+     * 将用户cookie重要信息设置为null
+     * @param users
+     * @return
+     */
+    private Users setUserNullProp(Users users){
+
+        users.setBirthday(null);
+        users.setCreatedTime(null);
+        users.setPassword(null);
+        users.setUpdatedTime(null);
+        users.setRealname(null);
+        users.setMobile(null);
+        return users;
     }
 }
