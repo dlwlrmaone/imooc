@@ -3,13 +3,12 @@ package com.imooc.controller;
 import com.imooc.pojo.Users;
 import com.imooc.pojo.bo.UserBO;
 import com.imooc.service.UserService;
-import com.imooc.utils.CookieUtils;
-import com.imooc.utils.IMOOCJSONResult;
-import com.imooc.utils.JsonUtils;
-import com.imooc.utils.MD5Utils;
+import com.imooc.utils.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +22,8 @@ public class PassportController {
 
     @Autowired
     private UserService userService;
+
+    private static final Logger logger = LoggerFactory.getLogger(PassportController.class);
 
     @ApiOperation(value = "用户名校验",notes = "校验用户名是否存在",httpMethod = "GET")
     @GetMapping("/usernameIsExist")
