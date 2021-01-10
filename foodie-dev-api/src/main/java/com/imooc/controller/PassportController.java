@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 @Api(value = "注册登录",tags = "用于注册登录的相关接口")
 @RestController
@@ -109,5 +110,18 @@ public class PassportController {
         users.setRealname(null);
         users.setMobile(null);
         return users;
+    }
+
+    @ApiOperation(value = "用户退出",notes = "用户退出登录状态",httpMethod = "POST")
+    @PostMapping("/userLogout")
+    public IMOOCJSONResult logout(@RequestParam String userId, HttpServletRequest request,HttpServletResponse response){
+
+        //清除用户相关cookie信息
+        CookieUtils.deleteCookie(request,response,"user");
+
+        //TODO 用户退出登录需要清空cookie
+        //TODO 分布式会话中需要清除用户数据
+
+        return IMOOCJSONResult.ok();
     }
 }
