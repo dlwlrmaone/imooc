@@ -14,17 +14,19 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
+/**
+ * 用户注册登录Controller
+ */
 @Api(value = "注册登录",tags = "用于注册登录的相关接口")
 @RestController
 @RequestMapping("passport")
 public class PassportController {
 
+    private static final Logger logger = LoggerFactory.getLogger(PassportController.class);
+
     @Autowired
     private UserService userService;
-
-    private static final Logger logger = LoggerFactory.getLogger(PassportController.class);
 
     @ApiOperation(value = "用户名校验",notes = "校验用户名是否存在",httpMethod = "GET")
     @GetMapping("/usernameIsExist")
@@ -68,6 +70,7 @@ public class PassportController {
         userResult = setUserNullProp(userResult);
         CookieUtils.setCookie(request,response,"user", JsonUtils.objectToJson(userResult),true);
 
+        logger.info("{}用户注册成功！",username);
         return IMOOCJSONResult.ok();
 
     }
@@ -93,6 +96,7 @@ public class PassportController {
         userResult = setUserNullProp(userResult);
         CookieUtils.setCookie(request,response,"user", JsonUtils.objectToJson(userResult),true);
 
+        logger.info("{}用户登录成功！",username);
         return IMOOCJSONResult.ok(userResult);
     }
 
@@ -122,6 +126,7 @@ public class PassportController {
         //TODO 用户退出登录需要清空cookie
         //TODO 分布式会话中需要清除用户数据
 
+        logger.info("用户已退出!");
         return IMOOCJSONResult.ok();
     }
 }
