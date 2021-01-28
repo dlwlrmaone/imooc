@@ -16,10 +16,34 @@
   </resultMap>
 
   <select id="getSubCatList" parameterType="int" resultMap="myCategoryVO">
-    select f.id id,f.name name,f.type type,f.father_id fatherId,
+    SELECT f.id id,f.`name` name,f.type type,f.father_id fatherId,
     c.id subId,c.name subName,c.type subType,c.father_id subFatherId
     FROM category f
-    LEFT JOIN category c on f.id = c.father_id
+    LEFT JOIN category c ON f.id = c.father_id
     WHERE f.father_id = #{rootCatId}
+  </select>
+
+  <resultMap id="myNewItemsVO" type="com.imooc.pojo.vo.NewItemsVO">
+    <id column="rootCatId" property="rootCatId" />
+    <result column="rootCatName" property="rootCatName" />
+    <result column="slogan" property="slogan" />
+    <result column="catImage" property="catImage" />
+    <result column="bgColor" property="bgColor" />
+
+    <collection property="simpleItemList" ofType="com.imooc.pojo.vo.SimpleItemVO">
+      <id column="itemId" property="itemId" />
+      <result column="itemName" property="itemName" />
+      <result column="itemUrl" property="itemUrl" />
+    </collection>
+  </resultMap>
+
+  <select id="getSixNewItems" parameterType="Map" resultMap="myNewItemsVO">
+    SELECT f.id rootCatId,f.`name` rootCatName,f.slogan slogan,f.cat_image catImage,f.bg_color bgColor,
+    i.id itemId,i.item_name itemName,ig.url itemUrl,i.created_time createdTime
+    FROM category f
+    LEFT JOIN items i ON f.id = i.root_cat_id
+    LEFT JOIN items_img ig ON i.id = ig.item_id
+    WHERE f.type = 1 AND i.root_cat_id = #{paramsMap.rootCatId} AND ig.is_main = 1
+    ORDER BY i.created_time DESC LIMIT 0,6
   </select>
 </mapper>

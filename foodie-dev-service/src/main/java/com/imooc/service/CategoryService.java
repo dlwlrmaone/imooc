@@ -3,6 +3,7 @@ package com.imooc.service;
 import com.imooc.pojo.Carousel;
 import com.imooc.pojo.Category;
 import com.imooc.pojo.vo.CategoryVO;
+import com.imooc.pojo.vo.NewItemsVO;
 
 import java.util.List;
 
@@ -23,5 +24,11 @@ public interface CategoryService {
      * @return
      */
     List<CategoryVO> getSubCatList(Integer rootCatId);
+
+    /**
+     * 查询首页每个一级分类下的6个新商品
+     * @return
+     */
+    List<NewItemsVO> getSixNewItems(Integer rootCatId);
 
 }

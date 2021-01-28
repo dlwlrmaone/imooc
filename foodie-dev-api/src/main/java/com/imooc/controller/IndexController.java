@@ -4,6 +4,7 @@ import com.imooc.enumclass.YesOrNo;
 import com.imooc.pojo.Carousel;
 import com.imooc.pojo.Category;
 import com.imooc.pojo.vo.CategoryVO;
+import com.imooc.pojo.vo.NewItemsVO;
 import com.imooc.service.CarouselService;
 import com.imooc.service.CategoryService;
 import com.imooc.utils.IMOOCJSONResult;
@@ -71,10 +72,29 @@ public class IndexController {
             @PathVariable Integer rootCatId){
 
         if (rootCatId == null){
-            return IMOOCJSONResult.errorMsg("分类不存在！");
+            return IMOOCJSONResult.errorMsg("一级分类不存在！");
         }
         List<CategoryVO> categories = categoryService.getSubCatList(rootCatId);
 
         return IMOOCJSONResult.ok(categories);
+    }
+
+    /**
+     * 获取首页6个商品并且懒加载显示
+     * @param rootCatId
+     * @return
+     */
+    @ApiOperation(value = "获取一级分类下最新6个商品",notes = "根据一级分类ID查询一级分类下最新6个商品",httpMethod = "GET")
+    @GetMapping("/sixNewItems/{rootCatId}")
+    public IMOOCJSONResult getNewSixItems(
+            @ApiParam(name = "rootCatId",value = "一级分类ID",required = true)
+            @PathVariable Integer rootCatId){
+
+        if (rootCatId == null){
+            return IMOOCJSONResult.errorMsg("一级分类不存在！");
+        }
+        List<NewItemsVO> items = categoryService.getSixNewItems(rootCatId);
+
+        return IMOOCJSONResult.ok(items);
     }
 }
