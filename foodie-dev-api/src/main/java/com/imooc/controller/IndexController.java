@@ -86,9 +86,7 @@ public class IndexController {
      */
     @ApiOperation(value = "获取一级分类下最新6个商品",notes = "根据一级分类ID查询一级分类下最新6个商品",httpMethod = "GET")
     @GetMapping("/sixNewItems/{rootCatId}")
-    public IMOOCJSONResult getNewSixItems(
-            @ApiParam(name = "rootCatId",value = "一级分类ID",required = true)
-            @PathVariable Integer rootCatId){
+    public IMOOCJSONResult getNewSixItems(@ApiParam(name = "rootCatId",value = "一级分类ID",required = true) @PathVariable Integer rootCatId){
 
         if (rootCatId == null){
             return IMOOCJSONResult.errorMsg("一级分类不存在！");
