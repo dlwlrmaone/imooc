@@ -1,11 +1,15 @@
 package com.imooc.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.imooc.enumclass.CommentLevelEnum;
 import com.imooc.mapper.*;
 import com.imooc.pojo.*;
 import com.imooc.pojo.vo.CommentCountsVO;
 import com.imooc.pojo.vo.ItemCommentVO;
 import com.imooc.service.ItemService;
+import com.imooc.utils.PagedGridResult;
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -90,22 +94,46 @@ public class ItemServiceImpl implements ItemService {
         commentCountsVO.setNormalCounts(normalCounts);
         commentCountsVO.setBadCounts(badCounts);
         commentCountsVO.setTotalCounts(totalCounts);
-
         return commentCountsVO;
     }
 
     @Transactional(propagation = Propagation.SUPPORTS)
     @Override
-    public List<ItemCommentVO> getItemComments(String itemId, Integer level) {
+    public PagedGridResult getItemComments(String itemId, Integer level, Integer page,Integer pageSize) {
         //sql中有两个判断条件，使用map来接收
         HashMap<String,Object> map = new HashMap<>();
         map.put("itemId",itemId);
         map.put("level",level);
 
+        //对数据进行分页，在sql执行之前
+        PageHelper.startPage(page,pageSize);
+
         List<ItemCommentVO> itemComment = itemsMapperCustom.getItemComment(map);
-        return itemComment;
+        return setPagedGrid(itemComment,page);
     }
 
+    /**
+     * 分页相关实现
+     * @param list
+     * @param page
+     * @return
+     */
+    private PagedGridResult setPagedGrid(List<?> list,Integer page){
+        PageInfo<?> pageList = new PageInfo<>(list);
+        PagedGridResult gridResult = new PagedGridResult();
+        gridResult.setPage(page);
+        gridResult.setRows(list);
+        gridResult.setTotal(pageList.getPages());
+        gridResult.setRecords(pageList.getTotal());
+        return gridResult;
+    }
+
+    /**
+     * 获取评论数量
+     * @param itemId
+     * @param level
+     * @return
+     */
     @Transactional(propagation = Propagation.SUPPORTS)
     Integer getCommentCounts(String itemId,Integer level){
 

@@ -3,6 +3,7 @@ package com.imooc.service;
 import com.imooc.pojo.*;
 import com.imooc.pojo.vo.CommentCountsVO;
 import com.imooc.pojo.vo.ItemCommentVO;
+import com.imooc.utils.PagedGridResult;
 
 import java.util.List;
 
@@ -50,6 +51,6 @@ public interface ItemService {
      * @param level
      * @return
      */
-    List<ItemCommentVO> getItemComments(String itemId,Integer level);
+    PagedGridResult getItemComments(String itemId, Integer level, Integer page, Integer pageSize);
 
 }

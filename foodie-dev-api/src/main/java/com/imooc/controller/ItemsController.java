@@ -10,6 +10,7 @@ import com.imooc.service.CarouselService;
 import com.imooc.service.CategoryService;
 import com.imooc.service.ItemService;
 import com.imooc.utils.IMOOCJSONResult;
+import com.imooc.utils.PagedGridResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -26,7 +27,7 @@ import java.util.List;
 @Api(value = "商品详情页",tags = "商品详情页展示的相关接口")
 @RestController
 @RequestMapping("items")
-public class ItemsController {
+public class ItemsController extends BaseController{
 
     private static final Logger logger = LoggerFactory.getLogger(PassportController.class);
 
@@ -64,6 +65,29 @@ public class ItemsController {
         }
         //查询出商品详情页要展示的所有数据，并且封装到一个VO类中
         CommentCountsVO commentCounts = itemService.getCommentCounts(itemId);
+
+        return IMOOCJSONResult.ok(commentCounts);
+    }
+
+    @ApiOperation(value = "查询商品评价信息",notes = "根据商品id获取商品评价详细信息",httpMethod = "GET")
+    @GetMapping("/comments")
+    public IMOOCJSONResult getComments(
+            @ApiParam(name = "itemId",value = "商品ID",required = true) @RequestParam String itemId,
+            @ApiParam(name = "level",value = "评论等级",required = false) @RequestParam Integer level,
+            @ApiParam(name = "page",value = "要查询的页数",required = false) @RequestParam Integer page,
+            @ApiParam(name = "pageSize",value = "每一页显示的记录数",required = false) @RequestParam Integer pageSize){
+
+        if (itemId == null){
+            return IMOOCJSONResult.errorMsg("该商品ID不存在！");
+        }
+        if (page == null){
+            page = COMMENT_PAGE;
+        }
+        if (pageSize == null){
+            pageSize = COMMENT_PAGE_SIZE;
+        }
+        //查询出商品详情页要展示的所有数据，并且封装到一个VO类中
+        PagedGridResult commentCounts = itemService.getItemComments(itemId,level,page,pageSize);
 
         return IMOOCJSONResult.ok(commentCounts);
     }
