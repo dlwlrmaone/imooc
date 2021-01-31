@@ -3,6 +3,7 @@ package com.imooc.controller;
 import com.imooc.enumclass.YesOrNo;
 import com.imooc.pojo.*;
 import com.imooc.pojo.vo.CategoryVO;
+import com.imooc.pojo.vo.CommentCountsVO;
 import com.imooc.pojo.vo.ItemInfoVO;
 import com.imooc.pojo.vo.NewItemsVO;
 import com.imooc.service.CarouselService;
@@ -15,10 +16,7 @@ import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -40,7 +38,7 @@ public class ItemsController {
     public IMOOCJSONResult getItems(@ApiParam(name = "itemId",value = "商品ID",required = true) @PathVariable String itemId){
 
         if (itemId == null){
-            return IMOOCJSONResult.errorMsg("该商品不存在！");
+            return IMOOCJSONResult.errorMsg("该商品ID不存在！");
         }
         //查询出商品详情页要展示的所有数据，并且封装到一个VO类中
         Items item = itemService.getItemsById(itemId);
@@ -55,6 +53,19 @@ public class ItemsController {
         itemInfoVO.setItemParams(itemParam);
 
         return IMOOCJSONResult.ok(itemInfoVO);
+    }
+
+    @ApiOperation(value = "查询商品评价数",notes = "根据商品id和评价等级获取商品评价数",httpMethod = "GET")
+    @GetMapping("/commentLevel")
+    public IMOOCJSONResult getCommentCounts(@ApiParam(name = "itemId",value = "商品ID",required = true) @RequestParam String itemId){
+
+        if (itemId == null){
+            return IMOOCJSONResult.errorMsg("该商品ID不存在！");
+        }
+        //查询出商品详情页要展示的所有数据，并且封装到一个VO类中
+        CommentCountsVO commentCounts = itemService.getCommentCounts(itemId);
+
+        return IMOOCJSONResult.ok(commentCounts);
     }
 
 }
