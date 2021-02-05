@@ -7,10 +7,10 @@ import com.imooc.mapper.*;
 import com.imooc.pojo.*;
 import com.imooc.pojo.vo.CommentCountsVO;
 import com.imooc.pojo.vo.ItemCommentVO;
+import com.imooc.pojo.vo.SearchItemsVO;
 import com.imooc.service.ItemService;
 import com.imooc.utils.DesensitizationUtil;
 import com.imooc.utils.PagedGridResult;
-import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -19,7 +19,6 @@ import tk.mybatis.mapper.entity.Example;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 商品详情页相关实现
@@ -45,12 +44,22 @@ public class ItemServiceImpl implements ItemService {
     @Autowired
     private ItemsMapperCustom itemsMapperCustom;
 
+    /**
+     * 商品查询
+     * @param itemId
+     * @return
+     */
     @Transactional(propagation = Propagation.SUPPORTS)
     @Override
     public Items getItemsById(String itemId) {
         return itemsMapper.selectByPrimaryKey(itemId);
     }
 
+    /**
+     * 商品图片展示
+     * @param itemId
+     * @return
+     */
     @Transactional(propagation = Propagation.SUPPORTS)
     @Override
     public List<ItemsImg> getItemImgList(String itemId) {
@@ -61,6 +70,11 @@ public class ItemServiceImpl implements ItemService {
         return itemsImgMapper.selectByExample(itemImgExample);
     }
 
+    /**
+     * 商品详情展示
+     * @param itemId
+     * @return
+     */
     @Transactional(propagation = Propagation.SUPPORTS)
     @Override
     public List<ItemsSpec> getItemSpecList(String itemId) {
@@ -81,6 +95,11 @@ public class ItemServiceImpl implements ItemService {
         return itemsParamMapper.selectOneByExample(itemParamExample);
     }
 
+    /**
+     * 评论数展示
+     * @param itemId
+     * @return
+     */
     @Transactional(propagation = Propagation.SUPPORTS)
     @Override
     public CommentCountsVO getCommentCounts(String itemId) {
@@ -98,6 +117,14 @@ public class ItemServiceImpl implements ItemService {
         return commentCountsVO;
     }
 
+    /**
+     * 商品评论详情展示
+     * @param itemId
+     * @param level
+     * @param page
+     * @param pageSize
+     * @return
+     */
     @Transactional(propagation = Propagation.SUPPORTS)
     @Override
     public PagedGridResult getItemComments(String itemId, Integer level, Integer page,Integer pageSize) {
@@ -115,6 +142,27 @@ public class ItemServiceImpl implements ItemService {
             vo.setNickName(DesensitizationUtil.commonDisplay(vo.getNickName()));
         }
         return setPagedGrid(itemComment,page);
+    }
+
+    /**
+     * 商品搜索
+     * @param keywords
+     * @param sort
+     * @param page
+     * @param pageSize
+     * @return
+     */
+    @Transactional(propagation = Propagation.SUPPORTS)
+    @Override
+    public PagedGridResult searchItems(String keywords, String sort, Integer page, Integer pageSize) {
+
+        HashMap<String,Object> map = new HashMap<>();
+        map.put("keywords",keywords);
+        map.put("sort",sort);
+
+        PageHelper.startPage(page,pageSize);
+        List<SearchItemsVO> searchItems = itemsMapperCustom.searchItems(map);
+        return setPagedGrid(searchItems,page);
     }
 
     /**

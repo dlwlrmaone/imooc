@@ -20,6 +20,11 @@ public class CarouselServiceImpl implements CarouselService {
     @Autowired
     private CarouselMapper carouselMapper;
 
+    /**
+     * 首页轮播图展示
+     * @param isShow
+     * @return
+     */
     @Transactional(propagation = Propagation.SUPPORTS)
     @Override
     public List<Carousel> queryAll(Integer isShow) {

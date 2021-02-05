@@ -1,19 +1,15 @@
 package com.imooc.controller;
 
-import com.imooc.enumclass.YesOrNo;
 import com.imooc.pojo.*;
-import com.imooc.pojo.vo.CategoryVO;
 import com.imooc.pojo.vo.CommentCountsVO;
 import com.imooc.pojo.vo.ItemInfoVO;
-import com.imooc.pojo.vo.NewItemsVO;
-import com.imooc.service.CarouselService;
-import com.imooc.service.CategoryService;
 import com.imooc.service.ItemService;
 import com.imooc.utils.IMOOCJSONResult;
 import com.imooc.utils.PagedGridResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,7 +56,7 @@ public class ItemsController extends BaseController{
     @GetMapping("/commentLevel")
     public IMOOCJSONResult getCommentCounts(@ApiParam(name = "itemId",value = "商品ID",required = true) @RequestParam String itemId){
 
-        if (itemId == null){
+        if (StringUtils.isBlank(itemId)){
             return IMOOCJSONResult.errorMsg("该商品ID不存在！");
         }
         //查询出商品详情页要展示的所有数据，并且封装到一个VO类中
@@ -74,10 +70,10 @@ public class ItemsController extends BaseController{
     public IMOOCJSONResult getComments(
             @ApiParam(name = "itemId",value = "商品ID",required = true) @RequestParam String itemId,
             @ApiParam(name = "level",value = "评论等级",required = false) @RequestParam Integer level,
-            @ApiParam(name = "page",value = "要查询的页数",required = false) @RequestParam Integer page,
+            @ApiParam(name = "page",value = "查询下一页的第几页",required = false) @RequestParam Integer page,
             @ApiParam(name = "pageSize",value = "每一页显示的记录数",required = false) @RequestParam Integer pageSize){
 
-        if (itemId == null){
+        if (StringUtils.isBlank(itemId)){
             return IMOOCJSONResult.errorMsg("该商品ID不存在！");
         }
         if (page == null){
@@ -90,6 +86,29 @@ public class ItemsController extends BaseController{
         PagedGridResult commentCounts = itemService.getItemComments(itemId,level,page,pageSize);
 
         return IMOOCJSONResult.ok(commentCounts);
+    }
+
+    @ApiOperation(value = "商品搜索",notes = "搜索商品列表",httpMethod = "GET")
+    @GetMapping("/search")
+    public IMOOCJSONResult searchItems(
+            @ApiParam(name = "keywords",value = "关键字",required = true) @RequestParam String keywords,
+            @ApiParam(name = "sort",value = "排序",required = false) @RequestParam String sort,
+            @ApiParam(name = "page",value = "查询下一页的第几页",required = false) @RequestParam Integer page,
+            @ApiParam(name = "pageSize",value = "每一页显示的记录数",required = false) @RequestParam Integer pageSize){
+
+        if (StringUtils.isBlank(keywords)){
+            return IMOOCJSONResult.errorMsg("该商品ID不存在！");
+        }
+        if (page == null){
+            page = COMMENT_PAGE;
+        }
+        if (pageSize == null){
+            pageSize = COMMENT_PAGE_SIZE;
+        }
+        //查询出商品详情页要展示的所有数据，并且封装到一个VO类中
+        PagedGridResult searchItems = itemService.searchItems(keywords,sort,page,pageSize);
+
+        return IMOOCJSONResult.ok(searchItems);
     }
 
 }

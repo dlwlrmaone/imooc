@@ -31,6 +31,10 @@ public class CategoryServiceImpl implements CategoryService {
     @Autowired
     private CategoryMapperCustom categoryMapperCustom;
 
+    /**
+     * 一级分类展示
+     * @return
+     */
     @Transactional(propagation = Propagation.SUPPORTS)
     @Override
     public List<Category> queryRootCategory() {
@@ -43,6 +47,11 @@ public class CategoryServiceImpl implements CategoryService {
         return categories;
     }
 
+    /**
+     * 子分类展示
+     * @param rootCatId
+     * @return
+     */
     @Transactional(propagation = Propagation.SUPPORTS)
     @Override
     public List<CategoryVO> getSubCatList(Integer rootCatId) {
@@ -50,6 +59,11 @@ public class CategoryServiceImpl implements CategoryService {
         return categoryMapperCustom.getSubCatList(rootCatId);
     }
 
+    /**
+     * 6个商品展示
+     * @param rootCatId
+     * @return
+     */
     @Transactional(propagation = Propagation.SUPPORTS)
     @Override
     public List<NewItemsVO> getSixNewItems(Integer rootCatId) {

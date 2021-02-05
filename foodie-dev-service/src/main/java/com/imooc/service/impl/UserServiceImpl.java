@@ -30,6 +30,11 @@ public class UserServiceImpl implements UserService {
 
     private static final String USER_FACE_URL = "img/iu_0001.jpeg";
 
+    /**
+     * 用户名校验
+     * @param username
+     * @return
+     */
     //SUPPORTS事务类型常用于查询
     @Transactional(propagation = Propagation.SUPPORTS)
     @Override
@@ -46,6 +51,11 @@ public class UserServiceImpl implements UserService {
         return users == null ? false : true;
     }
 
+    /**
+     * 用户注册
+     * @param userBO
+     * @return
+     */
     //REQUIRED事务类型常用于创建
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
@@ -77,6 +87,12 @@ public class UserServiceImpl implements UserService {
         return users;
     }
 
+    /**
+     * 用户登陆
+     * @param username
+     * @param password
+     * @return
+     */
     @Transactional(propagation = Propagation.SUPPORTS)
     @Override
     public Users userLogin(String username, String password) {

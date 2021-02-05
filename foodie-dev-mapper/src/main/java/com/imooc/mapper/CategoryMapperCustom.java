@@ -9,7 +9,17 @@ import java.util.Map;
 
 public interface CategoryMapperCustom {
 
+    /**
+     * 获取子分类
+     * @param rootCatId
+     * @return
+     */
     List<CategoryVO> getSubCatList(Integer rootCatId);
 
+    /**
+     * 获取子分类下最新6个商品
+     * @param map
+     * @return
+     */
     List<NewItemsVO> getSixNewItems(@Param("paramsMap") Map<String,Object> map);
 }
