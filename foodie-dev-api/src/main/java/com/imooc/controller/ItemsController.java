@@ -3,6 +3,7 @@ package com.imooc.controller;
 import com.imooc.pojo.*;
 import com.imooc.pojo.vo.CommentCountsVO;
 import com.imooc.pojo.vo.ItemInfoVO;
+import com.imooc.pojo.vo.ShopCartVO;
 import com.imooc.service.ItemService;
 import com.imooc.utils.IMOOCJSONResult;
 import com.imooc.utils.PagedGridResult;
@@ -59,7 +60,6 @@ public class ItemsController extends BaseController{
         if (StringUtils.isBlank(itemId)){
             return IMOOCJSONResult.errorMsg("该商品ID不存在！");
         }
-        //查询出商品详情页要展示的所有数据，并且封装到一个VO类中
         CommentCountsVO commentCounts = itemService.getCommentCounts(itemId);
 
         return IMOOCJSONResult.ok(commentCounts);
@@ -82,7 +82,6 @@ public class ItemsController extends BaseController{
         if (pageSize == null){
             pageSize = COMMENT_PAGE_SIZE;
         }
-        //查询出商品详情页要展示的所有数据，并且封装到一个VO类中
         PagedGridResult commentCounts = itemService.getItemComments(itemId,level,page,pageSize);
 
         return IMOOCJSONResult.ok(commentCounts);
@@ -105,7 +104,6 @@ public class ItemsController extends BaseController{
         if (pageSize == null){
             pageSize = COMMENT_PAGE_SIZE;
         }
-        //查询出商品详情页要展示的所有数据，并且封装到一个VO类中
         PagedGridResult searchItems = itemService.searchItems(keywords,sort,page,pageSize);
 
         return IMOOCJSONResult.ok(searchItems);
@@ -128,10 +126,22 @@ public class ItemsController extends BaseController{
         if (pageSize == null){
             pageSize = COMMENT_PAGE_SIZE;
         }
-        //查询出商品详情页要展示的所有数据，并且封装到一个VO类中
         PagedGridResult searchItems = itemService.searchItemsByThirdCat(catId,sort,page,pageSize);
 
         return IMOOCJSONResult.ok(searchItems);
+    }
+
+    @ApiOperation(value = "购物车商品刷新",notes = "用于用户长时间未登录网址，购物车商品进行更新",httpMethod = "GET")
+    @GetMapping("/refresh")
+    public IMOOCJSONResult getItemsBySpecIds(
+            @ApiParam(name = "itemSpecIds",value = "商品规格ID组（一个或多个）",required = true) @RequestParam String itemSpecIds){
+
+        if (StringUtils.isBlank(itemSpecIds)){
+            return IMOOCJSONResult.ok("购物车无商品！");
+        }
+        List<ShopCartVO> itemsBySpecIds = itemService.getItemsBySpecIds(itemSpecIds);
+
+        return IMOOCJSONResult.ok(itemsBySpecIds);
     }
 
 }

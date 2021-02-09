@@ -8,6 +8,7 @@ import com.imooc.pojo.*;
 import com.imooc.pojo.vo.CommentCountsVO;
 import com.imooc.pojo.vo.ItemCommentVO;
 import com.imooc.pojo.vo.SearchItemsVO;
+import com.imooc.pojo.vo.ShopCartVO;
 import com.imooc.service.ItemService;
 import com.imooc.utils.DesensitizationUtil;
 import com.imooc.utils.PagedGridResult;
@@ -17,6 +18,8 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -184,6 +187,23 @@ public class ItemServiceImpl implements ItemService {
         PageHelper.startPage(page,pageSize);
         List<SearchItemsVO> searchItems = itemsMapperCustom.searchItemsByThirdCat(map);
         return setPagedGrid(searchItems,page);
+    }
+
+    /**
+     * 购物车商品刷新
+     * @param specIds
+     * @return
+     */
+    @Transactional(propagation = Propagation.SUPPORTS)
+    @Override
+    public List<ShopCartVO> getItemsBySpecIds(String specIds) {
+
+        String[] ids = specIds.split(",");
+        ArrayList<String> specIdList = new ArrayList<>();
+        //使用Collections工具类将数组数据放在list里面
+        Collections.addAll(specIdList,ids);
+        return itemsMapperCustom.getItemsBySpecIds(specIdList);
+
     }
 
     /**
