@@ -39,4 +39,28 @@
         </choose>
     </select>
 
+    <select id="searchItemsByThirdCat" parameterType="Map" resultType="com.imooc.pojo.vo.SearchItemsVO">
+        SELECT i.item_name itemName,i.id itemId,i.sell_counts sellCounts,ig.url imgUrl,
+        tempSpec.price_discount price
+        FROM items i
+        LEFT JOIN items_img ig
+        ON i.id = ig.item_id
+        LEFT JOIN (SELECT item_id,MIN(price_discount) price_discount FROM items_spec GROUP BY item_id) tempSpec
+        ON i.id = tempSpec.item_id
+        WHERE ig.is_main = 1
+        AND i.cat_id = #{paramsMap.catId}
+        ORDER BY
+        <choose>
+            <when test="paramsMap.sort == &quot;c&quot; ">
+                i.sell_counts desc
+            </when>
+            <when test="paramsMap.sort == &quot;p&quot; ">
+                tempSpec.price_discount asc
+            </when>
+            <otherwise>
+                i.item_name asc
+            </otherwise>
+        </choose>
+    </select>
+
 </mapper>

@@ -70,6 +70,9 @@ public class PassportController {
         userResult = setUserNullProp(userResult);
         CookieUtils.setCookie(request,response,"user", JsonUtils.objectToJson(userResult),true);
 
+        //TODO 生成用户token，存入redis会话
+        //TODO 同步购物车数据
+
         logger.info("{}用户注册成功！",username);
         return IMOOCJSONResult.ok();
 
@@ -95,6 +98,9 @@ public class PassportController {
         }
         userResult = setUserNullProp(userResult);
         CookieUtils.setCookie(request,response,"user", JsonUtils.objectToJson(userResult),true);
+
+        //TODO 生成用户token，存入redis会话
+        //TODO 同步购物车数据
 
         logger.info("{}用户登录成功！",username);
         return IMOOCJSONResult.ok(userResult);

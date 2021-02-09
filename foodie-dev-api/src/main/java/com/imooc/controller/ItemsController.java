@@ -34,7 +34,7 @@ public class ItemsController extends BaseController{
     @GetMapping("/info/{itemId}")
     public IMOOCJSONResult getItems(@ApiParam(name = "itemId",value = "商品ID",required = true) @PathVariable String itemId){
 
-        if (itemId == null){
+        if (StringUtils.isBlank(itemId)){
             return IMOOCJSONResult.errorMsg("该商品ID不存在！");
         }
         //查询出商品详情页要展示的所有数据，并且封装到一个VO类中
@@ -107,6 +107,29 @@ public class ItemsController extends BaseController{
         }
         //查询出商品详情页要展示的所有数据，并且封装到一个VO类中
         PagedGridResult searchItems = itemService.searchItems(keywords,sort,page,pageSize);
+
+        return IMOOCJSONResult.ok(searchItems);
+    }
+
+    @ApiOperation(value = "三级分类下商品搜索",notes = "根据三级分类ID搜索商品列表",httpMethod = "GET")
+    @GetMapping("/catItems")
+    public IMOOCJSONResult searchItemsByThirdCat(
+            @ApiParam(name = "catId",value = "三级分类ID",required = true) @RequestParam Integer catId,
+            @ApiParam(name = "sort",value = "排序",required = false) @RequestParam String sort,
+            @ApiParam(name = "page",value = "查询下一页的第几页",required = false) @RequestParam Integer page,
+            @ApiParam(name = "pageSize",value = "每一页显示的记录数",required = false) @RequestParam Integer pageSize){
+
+        if (catId == null){
+            return IMOOCJSONResult.errorMsg("该商品ID不存在！");
+        }
+        if (page == null){
+            page = COMMENT_PAGE;
+        }
+        if (pageSize == null){
+            pageSize = COMMENT_PAGE_SIZE;
+        }
+        //查询出商品详情页要展示的所有数据，并且封装到一个VO类中
+        PagedGridResult searchItems = itemService.searchItemsByThirdCat(catId,sort,page,pageSize);
 
         return IMOOCJSONResult.ok(searchItems);
     }
