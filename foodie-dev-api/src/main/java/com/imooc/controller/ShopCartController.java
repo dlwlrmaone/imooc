@@ -42,4 +42,18 @@ public class ShopCartController extends BaseController{
         return IMOOCJSONResult.ok();
     }
 
+    @ApiOperation(value = "删除购物车商品",notes = "同步删除用户登录后的购物车商品",httpMethod = "GET")
+    @GetMapping("/del")
+    public IMOOCJSONResult delShopCart(
+            @RequestParam String userId, @RequestBody String itemSpecId,
+            HttpServletRequest request, HttpServletResponse response){
+
+        if (StringUtils.isBlank(userId)){
+            return IMOOCJSONResult.errorMsg("该用户ID不存在！");
+        }
+        //TODO 用户登录后，删除购物车商品，通过Redis来同步删除对应购物车数据
+
+        return IMOOCJSONResult.ok();
+    }
+
 }
