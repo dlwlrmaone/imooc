@@ -1,7 +1,6 @@
 package com.imooc.controller;
 
 import com.imooc.pojo.bo.ShopCartBO;
-import com.imooc.pojo.vo.CommentCountsVO;
 import com.imooc.service.ItemService;
 import com.imooc.utils.IMOOCJSONResult;
 import io.swagger.annotations.Api;
@@ -16,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * 商品详情页Controller
+ * 购物车Controller
  */
 @Api(value = "购物车",tags = "购物车功能的相关接口")
 @RestController
@@ -24,9 +23,6 @@ import javax.servlet.http.HttpServletResponse;
 public class ShopCartController extends BaseController{
 
     private static final Logger logger = LoggerFactory.getLogger(PassportController.class);
-
-    @Autowired
-    private ItemService itemService;
 
     @ApiOperation(value = "同步购物车数据",notes = "同步存储前端cookie上的购物车数据到后端",httpMethod = "GET")
     @GetMapping("/add")
