@@ -38,18 +38,18 @@ public class Sid {
 
     public static String next() {
         long id = idWorker.nextId();
-        String yyMMdd = new SimpleDateFormat("yyMMdd").format(new Date());
+        String yyMMdd = new SimpleDateFormat("yyyyMMdd").format(new Date());
         return yyMMdd + String.format("%014d", id);
     }
 
 
     /**
-     * 返回固定16位的字母数字混编的字符串。
+     * 返回固定18位的字母数字混编的字符串。
      */
     public String nextShort() {
         long id = idWorker.nextId();
-        String yyMMdd = new SimpleDateFormat("yyMMdd").format(new Date());
-        return yyMMdd + Utils.padLeft(Utils.encode(id), 10, '0');
+        String yyyyMMdd = new SimpleDateFormat("yyyyMMdd").format(new Date());
+        return yyyyMMdd + Utils.padLeft(Utils.encode(id), 10, '0');
     }
     
 //    public static void main(String[] args) {

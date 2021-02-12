@@ -42,11 +42,11 @@ public class ServiceLogAspect {
         long workTime = endTime - beginTime;
 
         if (workTime > 3000){
-            logger.error("===== 方法执行结束，耗时:{} 毫秒 =====",workTime);
+            logger.error("===== {}.{}方法执行结束，耗时:{} 毫秒 =====",point.getTarget().getClass(),point.getSignature().getName(),workTime);
         }else if (workTime > 2000){
-            logger.warn("===== 方法执行结束，耗时：{} 毫秒 =====",workTime);
+            logger.warn("===== {}.{}方法执行结束，耗时:{} 毫秒 =====",point.getTarget().getClass(),point.getSignature().getName(),workTime);
         }else {
-            logger.info("===== 方法执行结束，耗时：{} 毫秒 =====",workTime);
+            logger.info("===== {}.{}方法执行结束，耗时:{} 毫秒 =====",point.getTarget().getClass(),point.getSignature().getName(),workTime);
         }
 
         return proceed;
