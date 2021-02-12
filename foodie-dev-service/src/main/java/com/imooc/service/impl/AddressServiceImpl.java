@@ -92,11 +92,11 @@ public class AddressServiceImpl implements AddressService {
         UserAddress userAddress = new UserAddress();
         userAddress.setIsDefault(YesOrNo.YES.type);
         userAddress.setUserId(userId);
-        //此处默认地址均为1个，可以使用selectOne方法
+        //正常默认地址均为1个，可以使用selectOne方法，考虑数据库可能有错误数据，使用select方法
         List<UserAddress> addressList = userAddressMapper.select(userAddress);
         for (UserAddress address : addressList) {
             address.setIsDefault(YesOrNo.NO.type);
-            userAddressMapper.updateByPrimaryKeySelective(userAddress);
+            userAddressMapper.updateByPrimaryKeySelective(address);
         }
         //2.根据地址ID，修改为默认地址
         UserAddress defaultAddress = new UserAddress();
