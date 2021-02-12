@@ -98,6 +98,22 @@ public class AddressController extends BaseController{
         return IMOOCJSONResult.ok();
     }
 
+    @ApiOperation(value = "修改默认收货地址",notes = "当前用户下修改默认收货地址",httpMethod = "POST")
+    @PostMapping("/setDefault")
+    public IMOOCJSONResult updateDefaultAddress(
+            @ApiParam(name = "userId",value = "用户ID",required = true) @RequestParam String userId,
+            @ApiParam(name = "addressId",value = "用户地址ID",required = true) @RequestParam String addressId){
+
+        //加判断已防止空数据到达数据库，对数据库造成压力
+        if (StringUtils.isBlank(userId) || StringUtils.isBlank(addressId)){
+            return IMOOCJSONResult.errorMsg("该用户或待修改默认地址不存在！");
+        }
+
+        addressService.updateDefaultAddress(userId,addressId);
+
+        return IMOOCJSONResult.ok();
+    }
+
     private IMOOCJSONResult checkAddress(AddressBO addressBO){
 
         String receiver = addressBO.getReceiver();

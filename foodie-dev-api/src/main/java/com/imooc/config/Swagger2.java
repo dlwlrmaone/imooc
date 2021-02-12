@@ -34,7 +34,7 @@ public class Swagger2 {
 
         Contact dlwlrmaone = new Contact("dlwlrmaone", "https://www.imoocfoodie.com", "spaceloviu@163.com");
         ApiInfo apiInfo = new ApiInfoBuilder().title("天天吃货电商平台API").contact(dlwlrmaone)
-                .description("项目经理：张宇，后端开发：张宇，前端开发：赵敏，UI设计：李宁，产品经理：张宇，dev测试：张宇，uat测试：李宁，运维经理：张宇，编写时间：2021.01.05 22:00")
+                .description("项目经理：张宇，后端开发：张宇，前端开发：赵敏，UI设计：李宁，产品经理：李宁，dev测试：张宇，uat测试：李宁，运维经理：张宇，编写时间：2021.01.05 22:00")
                 .version("1.0.1").termsOfServiceUrl("https://www.imoocfoodie.com")
                 .license("中华人民共和国网络监管部特批").licenseUrl("https://www.baidu.com").build();
         return apiInfo;

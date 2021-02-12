@@ -1,10 +1,10 @@
 package com.imooc.service.impl;
 
+import com.imooc.enumclass.YesOrNo;
 import com.imooc.mapper.UserAddressMapper;
 import com.imooc.pojo.UserAddress;
 import com.imooc.pojo.bo.AddressBO;
 import com.imooc.service.AddressService;
-import com.imooc.utils.IMOOCJSONResult;
 import org.n3r.idworker.Sid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,5 +82,29 @@ public class AddressServiceImpl implements AddressService {
         userAddress.setId(addressId);
         userAddress.setUserId(userId);
         userAddressMapper.delete(userAddress);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    @Override
+    public void updateDefaultAddress(String userId,String addressId) {
+
+        //1.查找默认地址，设置为不默认
+        UserAddress userAddress = new UserAddress();
+        userAddress.setIsDefault(YesOrNo.YES.type);
+        userAddress.setUserId(userId);
+        //此处默认地址均为1个，可以使用selectOne方法
+        List<UserAddress> addressList = userAddressMapper.select(userAddress);
+        for (UserAddress address : addressList) {
+            address.setIsDefault(YesOrNo.NO.type);
+            userAddressMapper.updateByPrimaryKeySelective(userAddress);
+        }
+        //2.根据地址ID，修改为默认地址
+        UserAddress defaultAddress = new UserAddress();
+        defaultAddress.setUserId(userId);
+        defaultAddress.setId(addressId);
+        defaultAddress.setIsDefault(YesOrNo.YES.type);
+        defaultAddress.setUpdatedTime(new Date());
+
+        userAddressMapper.updateByPrimaryKeySelective(defaultAddress);
     }
 }
