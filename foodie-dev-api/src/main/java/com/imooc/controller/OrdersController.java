@@ -1,5 +1,6 @@
 package com.imooc.controller;
 
+import com.imooc.enumclass.PayMethodEnum;
 import com.imooc.pojo.bo.SubmitOrderBO;
 import com.imooc.service.AddressService;
 import com.imooc.utils.IMOOCJSONResult;
@@ -28,6 +29,10 @@ public class OrdersController extends BaseController{
     public IMOOCJSONResult createOrders(@RequestBody SubmitOrderBO submitOrderBO){
 
         System.out.println(submitOrderBO.toString());
+
+        if (PayMethodEnum.CodeBool(submitOrderBO.getPayMethod())){
+            return IMOOCJSONResult.errorMsg("该支付方式不支持！");
+        }
 
         //1.创建订单
         //2.创建订单后，移除购物车中已提交（结算）的商品

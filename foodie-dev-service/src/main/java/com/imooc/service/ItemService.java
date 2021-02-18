@@ -80,4 +80,25 @@ public interface ItemService {
      */
     List<ShopCartVO> getItemsBySpecIds(String specIds);
 
+    /**
+     * 根据商品规格ID获取商品规格对象具体信息
+     * @param itemSpecId
+     * @return
+     */
+    ItemsSpec getItemByItemSpecId(String itemSpecId);
+
+    /**
+     * 根据商品ID获取商品主图
+     * @param itemId
+     * @return
+     */
+    String getItemMainImgById(String itemId);
+
+    /**
+     * 库存商品数量扣除
+     * @param specId
+     * @param buyCounts
+     */
+    void reduceItemStock(String specId,int buyCounts);
+
 }

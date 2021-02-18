@@ -43,4 +43,12 @@ public interface AddressService {
      */
     void updateDefaultAddress(String userId,String addressId);
 
+    /**
+     * 查询正在使用的用户订单收货地址
+     * @param userId
+     * @param addressId
+     * @return
+     */
+    UserAddress getUserAddress(String userId,String addressId);
+
 }

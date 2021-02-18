@@ -3,6 +3,7 @@ package com.imooc.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.imooc.enumclass.CommentLevelEnum;
+import com.imooc.enumclass.YesOrNo;
 import com.imooc.mapper.*;
 import com.imooc.pojo.*;
 import com.imooc.pojo.vo.CommentCountsVO;
@@ -204,6 +205,53 @@ public class ItemServiceImpl implements ItemService {
         Collections.addAll(specIdList,ids);
         return itemsMapperCustom.getItemsBySpecIds(specIdList);
 
+    }
+
+    /**
+     * 根据商品规格ID获取商品规格对象具体信息
+     * @param itemSpecId
+     * @return
+     */
+    @Transactional(propagation = Propagation.SUPPORTS)
+    @Override
+    public ItemsSpec getItemByItemSpecId(String itemSpecId) {
+
+        return itemsSpecMapper.selectByPrimaryKey(itemSpecId);
+    }
+
+    /**
+     * 根据商品ID获取商品主图
+     * @param itemId
+     * @return
+     */
+    @Transactional(propagation = Propagation.SUPPORTS)
+    @Override
+    public String getItemMainImgById(String itemId) {
+
+        ItemsImg itemsImg = new ItemsImg();
+        itemsImg.setId(itemId);
+        itemsImg.setIsMain(YesOrNo.YES.type);
+        ItemsImg mainImg = itemsImgMapper.selectOne(itemsImg);
+
+        return mainImg != null ? mainImg.getUrl() : "";
+    }
+
+    /**
+     * 库存商品数量扣除
+     * @param specId
+     * @param buyCounts
+     */
+    @Override
+    public synchronized void reduceItemStock(String specId, int buyCounts) {
+
+        //synchronized,不推荐使用，效率低下，集群无用
+        //锁数据库，不推荐使用，数据库性能低下
+        //TODO 分布式锁，实现方式：Redis，zookeeper
+
+        int stock = itemsMapperCustom.reduceItemStock(specId, buyCounts);
+        if (stock < 1){
+            throw new RuntimeException("订单创建失败，失败原因：库存不足！");
+        }
     }
 
     /**
