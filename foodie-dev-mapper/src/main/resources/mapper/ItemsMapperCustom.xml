@@ -79,7 +79,7 @@
     </select>
     
     <update id="reduceItemStock">
-        UPDATE item_spec SET stock = stock - #{pendingCounts} WHERE id = #{specId} AND stock >= #{pendingCounts}
+        UPDATE items_spec SET stock = stock - #{pendingCounts} WHERE id = #{specId} AND stock >= #{pendingCounts}
     </update>
 
 </mapper>

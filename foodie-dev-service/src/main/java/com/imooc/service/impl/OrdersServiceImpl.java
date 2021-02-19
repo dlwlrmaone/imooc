@@ -50,7 +50,7 @@ public class OrdersServiceImpl implements OrdersService {
      */
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
-    public List<SubmitOrderBO> createOrders(SubmitOrderBO submitOrderBO) {
+    public String createOrders(SubmitOrderBO submitOrderBO) {
 
         String userId = submitOrderBO.getUserId();
         String addressId = submitOrderBO.getAddressId();
@@ -127,6 +127,6 @@ public class OrdersServiceImpl implements OrdersService {
         orderStatus.setCreatedTime(new Date());
         orderStatusMapper.insert(orderStatus);
 
-        return null;
+        return orderId;
     }
 }
