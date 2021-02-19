@@ -14,4 +14,11 @@ public interface OrdersService {
      */
     String createOrders(SubmitOrderBO submitOrderBO);
 
+    /**
+     * 订单状态修改
+     * @param merchantOrderId
+     * @param orderStatus
+     */
+    void updateOrderStatus(String merchantOrderId,Integer orderStatus);
+
 }

@@ -1,16 +1,17 @@
 package com.imooc.controller;
 
+import com.imooc.enumclass.OrderStatusEnum;
 import com.imooc.enumclass.PayMethodEnum;
 import com.imooc.pojo.bo.SubmitOrderBO;
-import com.imooc.service.AddressService;
 import com.imooc.service.OrdersService;
-import com.imooc.utils.CookieUtils;
 import com.imooc.utils.IMOOCJSONResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -31,7 +32,9 @@ public class OrdersController extends BaseController{
 
     @ApiOperation(value = "订单创建",notes = "创建该用户下的相关订单信息",httpMethod = "POST")
     @PostMapping("/create")
-    public IMOOCJSONResult createOrders(@RequestBody SubmitOrderBO submitOrderBO,HttpServletRequest request, HttpServletResponse response){
+    public IMOOCJSONResult createOrders(
+            @ApiParam(name = "submitOrderBO",value = "订单提交BO",required = true)
+            @RequestBody SubmitOrderBO submitOrderBO,HttpServletRequest request, HttpServletResponse response){
 
         System.out.println(submitOrderBO.toString());
 
@@ -47,6 +50,16 @@ public class OrdersController extends BaseController{
         //3.向支付中心发生相关订单信息，用于保存支付中心的订单
 
         return IMOOCJSONResult.ok(orderId);
+    }
+
+    @ApiOperation(value = "支付后，订单状态修改",notes = "支付成功后，修改订单状态为待发货",httpMethod = "POST")
+    @PostMapping("notifyMerchantOrderPaid")
+    public Integer notifyMerchantOrderPaid(
+            @ApiParam(name = "merchantOrderId",value = "商家订单ID",required = true)@RequestParam String merchantOrderId){
+
+        ordersService.updateOrderStatus(merchantOrderId, OrderStatusEnum.WAIT_DELIVER.type);
+
+        return HttpStatus.OK.value();
     }
 
 }
