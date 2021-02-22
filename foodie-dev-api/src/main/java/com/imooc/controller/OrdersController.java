@@ -2,7 +2,10 @@ package com.imooc.controller;
 
 import com.imooc.enumclass.OrderStatusEnum;
 import com.imooc.enumclass.PayMethodEnum;
+import com.imooc.pojo.OrderStatus;
 import com.imooc.pojo.bo.SubmitOrderBO;
+import com.imooc.pojo.vo.MerchantOrderVO;
+import com.imooc.pojo.vo.OrderVO;
 import com.imooc.service.OrdersService;
 import com.imooc.utils.IMOOCJSONResult;
 import io.swagger.annotations.Api;
@@ -11,8 +14,9 @@ import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -30,6 +34,9 @@ public class OrdersController extends BaseController{
     @Autowired
     private OrdersService ordersService;
 
+    @Autowired
+    private RestTemplate restTemplate;
+
     @ApiOperation(value = "订单创建",notes = "创建该用户下的相关订单信息",httpMethod = "POST")
     @PostMapping("/create")
     public IMOOCJSONResult createOrders(
@@ -43,13 +50,29 @@ public class OrdersController extends BaseController{
         }
 
         //1.创建订单
-        String orderId = ordersService.createOrders(submitOrderBO);
+        OrderVO orderVO = ordersService.createOrders(submitOrderBO);
+
         //2.创建订单后，移除购物车中已提交（结算）的商品
         // TODO 整合redis之后，完善购物车上的库存商品清除，并同步到前端的cookie
 //        CookieUtils.setCookie(request,response,FOODIE_SHOPCART,"",true);
-        //3.向支付中心发生相关订单信息，用于保存支付中心的订单
 
-        return IMOOCJSONResult.ok(orderId);
+        //3.向支付中心发生相关订单信息，用于保存支付中心的订单
+        MerchantOrderVO merchantOrderVO = orderVO.getMerchantOrderVO();
+        merchantOrderVO.setReturnUrl(payReturnUrl);
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        //设置http请求头为application/json
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+        httpHeaders.add("imoocUserId","imooc");
+        httpHeaders.add("password","imooc");
+        HttpEntity<MerchantOrderVO> httpEntity = new HttpEntity<>(merchantOrderVO,httpHeaders);
+        ResponseEntity<IMOOCJSONResult> responseEntity = restTemplate.postForEntity(payUrl, httpEntity, IMOOCJSONResult.class);
+        IMOOCJSONResult payResult = responseEntity.getBody();
+        if (payResult.getStatus() != 200){
+            return IMOOCJSONResult.errorMsg("支付中心订单创建失败，请联系订单中心管理员！");
+        }
+
+        return IMOOCJSONResult.ok(orderVO);
     }
 
     @ApiOperation(value = "支付后，订单状态修改",notes = "支付成功后，修改订单状态为待发货",httpMethod = "POST")
@@ -60,6 +83,15 @@ public class OrdersController extends BaseController{
         ordersService.updateOrderStatus(merchantOrderId, OrderStatusEnum.WAIT_DELIVER.type);
 
         return HttpStatus.OK.value();
+    }
+
+    @ApiOperation(value = "支付状态轮询查询",notes = "支付后，订单支付状态轮询查询",httpMethod = "POST")
+    @PostMapping("getPaidOrderInfo")
+    public IMOOCJSONResult getPaidOrderInfo(
+            @ApiParam(name = "orderId",value = "订单ID",required = true)@RequestParam String orderId){
+
+        OrderStatus orderStatusInfo = ordersService.getOrderStatusInfo(orderId);
+        return IMOOCJSONResult.ok(orderStatusInfo);
     }
 
 }

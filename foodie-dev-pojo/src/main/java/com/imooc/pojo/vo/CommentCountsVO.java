@@ -5,10 +5,10 @@ package com.imooc.pojo.vo;
  */
 public class CommentCountsVO {
 
-    public Integer totalCounts;
-    public Integer goodCounts;
-    public Integer normalCounts;
-    public Integer badCounts;
+    private Integer totalCounts;
+    private Integer goodCounts;
+    private Integer normalCounts;
+    private Integer badCounts;
 
     public Integer getTotalCounts() {
         return totalCounts;
