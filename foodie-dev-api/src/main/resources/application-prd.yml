@@ -44,3 +44,8 @@ logback:
 pagehelper:
   helper-dialect: mysql
   support-methods-arguments: true
+
+#定时任务配置
+autoCloseOrder:
+  task:
+    timerTask: "0/3 * * * * ?"
