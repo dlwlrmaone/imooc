@@ -6,6 +6,7 @@ import com.imooc.pojo.bo.center.CenterUserBO;
 import com.imooc.resource.FileUpload;
 import com.imooc.service.center.CenterUserService;
 import com.imooc.utils.CookieUtils;
+import com.imooc.utils.DateUtil;
 import com.imooc.utils.IMOOCJSONResult;
 import com.imooc.utils.JsonUtils;
 import io.swagger.annotations.Api;
@@ -50,7 +51,10 @@ public class CenterUserController extends BaseController {
 
         //定义头像保存的地址
 //        String facePath = USER_FACE_LOCATION + File.separator + userId;
-        String facePath = fileUpload.getFaceUploadLocation() + File.separator + userId;
+        String facePath = fileUpload.getUserFaceLocation();
+        //在路径上为每一个用户增加一个userid，用于区分不同用户上传
+        String uploadPathPrefix = File.separator + userId;
+
         if (face != null){
             //获取上传头像文件名称
             String filename = face.getOriginalFilename();
@@ -61,8 +65,10 @@ public class CenterUserController extends BaseController {
                 String suffix = strings[strings.length - 1];
                 //文件名重组（覆盖式上传），如果需要增量式上传，则加上上传时间文件名
                 String newFaceName = "face-" + userId + "." + suffix;
-                //定义头像最终保存位置
-                String finalFacePath = facePath + File.separator + newFaceName;
+                //定义头像真实保存位置
+                String finalFacePath = facePath + uploadPathPrefix + File.separator + newFaceName;
+                // 用于提供给web服务访问的地址
+                uploadPathPrefix += ("/" + newFaceName);
 
                 File outFile = new File(finalFacePath);
                 FileOutputStream fileOutputStream = null;
@@ -78,7 +84,7 @@ public class CenterUserController extends BaseController {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }finally {
-                    if (fileOutputStream != null){
+                    if (fileOutputStream != null) {
                         try {
                             fileOutputStream.flush();
                             fileOutputStream.close();
@@ -87,18 +93,32 @@ public class CenterUserController extends BaseController {
                         }
                     }
                 }
-
             }
         }else {
             return IMOOCJSONResult.errorMsg("上传用户头像不能为空！");
         }
+        // 获取图片服务地址
+        String faceServerUrl = fileUpload.getUserFaceServerUrl();
+
+        // 由于浏览器可能存在缓存的情况，所以在这里，我们需要加上时间戳来保证更新后的图片可以及时刷新
+        String finalUserFaceUrl = faceServerUrl + uploadPathPrefix
+                + "?t=" + DateUtil.getCurrentDateString(DateUtil.DATE_PATTERN);
+
+        // 更新用户头像到数据库
+        Users updateUserFace = centerUserService.updateUserFace(userId, finalUserFaceUrl);
+
+        updateUserFace = setUserNullProp(updateUserFace);
+        CookieUtils.setCookie(request, response, "user",
+                JsonUtils.objectToJson(updateUserFace), true);
+
+        // TODO 后续要改，增加令牌token，会整合进redis，分布式会话
 
         return IMOOCJSONResult.ok();
     }
 
     @ApiOperation(value = "修改用户信息",notes = "通过用户ID修改用户中心的用户信息",httpMethod = "POST")
     @PostMapping("/update")
-    public IMOOCJSONResult getCenterUserInfo(
+    public IMOOCJSONResult updateCenterUserInfo(
             @ApiParam(name = "userId",value = "用户ID",required = true) @RequestParam String userId,
             @ApiParam(name = "centerUserBO",value = "用户中心-用户BO",required = true) @RequestBody @Valid CenterUserBO centerUserBO,
             BindingResult result, HttpServletRequest request, HttpServletResponse response){

@@ -9,13 +9,22 @@ import org.springframework.stereotype.Component;
 @PropertySource("classpath:file-upload-dev.properties")
 public class FileUpload {
 
-    private String faceUploadLocation;
+    private String userFaceLocation;
+    private String userFaceServerUrl;
 
-    public String getFaceUploadLocation() {
-        return faceUploadLocation;
+    public String getUserFaceLocation() {
+        return userFaceLocation;
     }
 
-    public void setFaceUploadLocation(String faceUploadLocation) {
-        this.faceUploadLocation = faceUploadLocation;
+    public void setUserFaceLocation(String userFaceLocation) {
+        this.userFaceLocation = userFaceLocation;
+    }
+
+    public String getUserFaceServerUrl() {
+        return userFaceServerUrl;
+    }
+
+    public void setUserFaceServerUrl(String userFaceServerUrl) {
+        this.userFaceServerUrl = userFaceServerUrl;
     }
 }
