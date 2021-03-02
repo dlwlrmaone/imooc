@@ -3,6 +3,7 @@ package com.imooc.controller.center;
 import com.imooc.controller.BaseController;
 import com.imooc.pojo.Users;
 import com.imooc.pojo.bo.center.CenterUserBO;
+import com.imooc.resource.FileUpload;
 import com.imooc.service.center.CenterUserService;
 import com.imooc.utils.CookieUtils;
 import com.imooc.utils.IMOOCJSONResult;
@@ -37,6 +38,9 @@ public class CenterUserController extends BaseController {
     @Autowired
     public CenterUserService centerUserService;
 
+    @Autowired
+    public FileUpload fileUpload;
+
     @ApiOperation(value = "用户头像修改上传",notes = "通过用户ID修改上传用户头像",httpMethod = "POST")
     @PostMapping("/uploadFace")
     public IMOOCJSONResult uploadFace(
@@ -45,7 +49,8 @@ public class CenterUserController extends BaseController {
             HttpServletRequest request, HttpServletResponse response) {
 
         //定义头像保存的地址
-        String facePath = USER_FACE_LOCATION + File.separator + userId;
+//        String facePath = USER_FACE_LOCATION + File.separator + userId;
+        String facePath = fileUpload.getFaceUploadLocation() + File.separator + userId;
         if (face != null){
             //获取上传头像文件名称
             String filename = face.getOriginalFilename();
