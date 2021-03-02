@@ -22,6 +22,10 @@ spring:
       pool-name: DateSourceHikariCP # 连接池名字
       max-lifetime: 1800000 # 连接的生命时长（毫秒），超时而且没被使用则被释放（retired），默认:30分钟
       connection-test-query: SELECT 1
+  servlet: #上传文件大小配置
+    multipart:
+      max-file-size: 10MB #设置单个文件的大小
+      max-request-size: 100MB #设置单次请求文件的总大小
 
 # mybatis 配置
 mybatis:

@@ -1,5 +1,6 @@
 package com.imooc.controller.center;
 
+import com.imooc.controller.BaseController;
 import com.imooc.pojo.Users;
 import com.imooc.pojo.bo.center.CenterUserBO;
 import com.imooc.service.center.CenterUserService;
@@ -9,15 +10,18 @@ import com.imooc.utils.JsonUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,12 +32,66 @@ import java.util.Map;
 @Api(value = "center-用户中心-用户信息",tags = "用户中心-用户信息页面的相关接口")
 @RestController
 @RequestMapping("userInfo")
-public class CenterUserController {
+public class CenterUserController extends BaseController {
 
     @Autowired
     public CenterUserService centerUserService;
 
-    @ApiOperation(value = "修改用户中心用户信息",notes = "通过用户ID修改用户中心的用户信息",httpMethod = "POST")
+    @ApiOperation(value = "用户头像修改上传",notes = "通过用户ID修改上传用户头像",httpMethod = "POST")
+    @PostMapping("/uploadFace")
+    public IMOOCJSONResult uploadFace(
+            @ApiParam(name = "userId",value = "用户ID",required = true) @RequestParam String userId,
+            @ApiParam(name = "face",value = "用户头像",required = true) MultipartFile face,
+            HttpServletRequest request, HttpServletResponse response) {
+
+        //定义头像保存的地址
+        String facePath = USER_FACE_LOCATION + File.separator + userId;
+        if (face != null){
+            //获取上传头像文件名称
+            String filename = face.getOriginalFilename();
+            if (StringUtils.isNotBlank(filename)){
+                //文件重命名
+                String[] strings = filename.split("\\.");
+                //获取文件后缀名
+                String suffix = strings[strings.length - 1];
+                //文件名重组（覆盖式上传），如果需要增量式上传，则加上上传时间文件名
+                String newFaceName = "face-" + userId + "." + suffix;
+                //定义头像最终保存位置
+                String finalFacePath = facePath + File.separator + newFaceName;
+
+                File outFile = new File(finalFacePath);
+                FileOutputStream fileOutputStream = null;
+                if (outFile.getParentFile() != null){
+                    //创建文件夹
+                    outFile.getParentFile().mkdirs();
+                }
+                //文件输出到目录文件路径
+                try {
+                    fileOutputStream = new FileOutputStream(outFile);
+                    InputStream inputStream = face.getInputStream();
+                    IOUtils.copy(inputStream,fileOutputStream);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }finally {
+                    if (fileOutputStream != null){
+                        try {
+                            fileOutputStream.flush();
+                            fileOutputStream.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+
+            }
+        }else {
+            return IMOOCJSONResult.errorMsg("上传用户头像不能为空！");
+        }
+
+        return IMOOCJSONResult.ok();
+    }
+
+    @ApiOperation(value = "修改用户信息",notes = "通过用户ID修改用户中心的用户信息",httpMethod = "POST")
     @PostMapping("/update")
     public IMOOCJSONResult getCenterUserInfo(
             @ApiParam(name = "userId",value = "用户ID",required = true) @RequestParam String userId,
