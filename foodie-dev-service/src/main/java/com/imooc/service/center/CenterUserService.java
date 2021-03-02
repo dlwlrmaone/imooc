@@ -25,7 +25,7 @@ public interface CenterUserService {
     /**
      * 用户中心-用户头像更新
      * @param userId
-     * @param faceId
+     * @param faceUrl
      * @return
      */
     Users updateUserFace(String userId,String faceUrl);

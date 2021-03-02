@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.*;
+import java.util.Date;
 
 /**
  * 前端传过来的json数据统一封装为BO对象
@@ -35,9 +36,9 @@ public class CenterUserBO {
     @Min(value = 0,message = "性别选择不正确")
     @Max(value = 2,message = "性别选择不正确")
     @ApiModelProperty(value = "性别",name = "sex",example = "女",required = false)
-    private String sex;
+    private Integer sex;
     @ApiModelProperty(value = "生日",name = "birthday",example = "1995-12-24",required = false)
-    private String birthday;
+    private Date birthday;
 
     public String getUsername() {
         return username;
@@ -95,19 +96,19 @@ public class CenterUserBO {
         this.email = email;
     }
 
-    public String getSex() {
+    public Integer getSex() {
         return sex;
     }
 
-    public void setSex(String sex) {
+    public void setSex(Integer sex) {
         this.sex = sex;
     }
 
-    public String getBirthday() {
+    public Date getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(String birthday) {
+    public void setBirthday(Date birthday) {
         this.birthday = birthday;
     }
 }
