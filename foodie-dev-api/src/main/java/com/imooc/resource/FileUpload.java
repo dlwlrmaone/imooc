@@ -4,6 +4,9 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
+/**
+ * 文件上传配置类
+ */
 @Component
 @ConfigurationProperties(prefix = "file.face")
 @PropertySource("classpath:file-upload-dev.properties")

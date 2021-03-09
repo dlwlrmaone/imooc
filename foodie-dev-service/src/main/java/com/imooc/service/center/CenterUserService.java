@@ -4,7 +4,7 @@ import com.imooc.pojo.Users;
 import com.imooc.pojo.bo.center.CenterUserBO;
 
 /**
- * center用户中心
+ * center用户中心-我的信息
  */
 public interface CenterUserService {
 

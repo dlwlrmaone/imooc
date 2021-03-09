@@ -28,7 +28,7 @@ import java.util.List;
  * 商品详情页相关实现
  */
 @Service
-public class ItemServiceImpl implements ItemService {
+public class ItemServiceImpl extends BaseServiceImpl implements ItemService {
 
     @Autowired
     private ItemsMapper itemsMapper;
@@ -252,22 +252,6 @@ public class ItemServiceImpl implements ItemService {
         if (stock < 1){
             throw new RuntimeException("订单创建失败，失败原因：库存不足！");
         }
-    }
-
-    /**
-     * 分页相关实现
-     * @param list
-     * @param page
-     * @return
-     */
-    private PagedGridResult setPagedGrid(List<?> list,Integer page){
-        PageInfo<?> pageList = new PageInfo<>(list);
-        PagedGridResult gridResult = new PagedGridResult();
-        gridResult.setPage(page);
-        gridResult.setRows(list);
-        gridResult.setTotal(pageList.getPages());
-        gridResult.setRecords(pageList.getTotal());
-        return gridResult;
     }
 
     /**

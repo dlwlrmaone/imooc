@@ -63,6 +63,11 @@ public class CenterUserController extends BaseController {
                 String[] strings = filename.split("\\.");
                 //获取文件后缀名
                 String suffix = strings[strings.length - 1];
+                if (!suffix.equalsIgnoreCase("jpg") &&
+                    !suffix.equalsIgnoreCase("jpeg") &&
+                    !suffix.equalsIgnoreCase("png")){
+                    return IMOOCJSONResult.errorMsg("待上传头像图片格式不符合要求，请检查！");
+                }
                 //文件名重组（覆盖式上传），如果需要增量式上传，则加上上传时间文件名
                 String newFaceName = "face-" + userId + "." + suffix;
                 //定义头像真实保存位置
