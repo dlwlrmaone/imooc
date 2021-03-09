@@ -15,5 +15,4 @@ public interface OrdersMapperCustom {
      */
     List<MyOrdersVO> getMyOrders(@Param("paramsMap") Map<String, Object> map);
 
-
 }

@@ -77,10 +77,10 @@ public class ItemsController extends BaseController{
             return IMOOCJSONResult.errorMsg("该商品ID不存在！");
         }
         if (page == null){
-            page = COMMENT_PAGE;
+            page = COMMON_PAGE;
         }
         if (pageSize == null){
-            pageSize = COMMENT_PAGE_SIZE;
+            pageSize = COMMON_PAGE_SIZE;
         }
         PagedGridResult commentCounts = itemService.getItemComments(itemId,level,page,pageSize);
 
@@ -99,10 +99,10 @@ public class ItemsController extends BaseController{
             return IMOOCJSONResult.errorMsg("该商品ID不存在！");
         }
         if (page == null){
-            page = COMMENT_PAGE;
+            page = COMMON_PAGE;
         }
         if (pageSize == null){
-            pageSize = COMMENT_PAGE_SIZE;
+            pageSize = COMMON_PAGE_SIZE;
         }
         PagedGridResult searchItems = itemService.searchItems(keywords,sort,page,pageSize);
 
@@ -121,10 +121,10 @@ public class ItemsController extends BaseController{
             return IMOOCJSONResult.errorMsg("该商品ID不存在！");
         }
         if (page == null){
-            page = COMMENT_PAGE;
+            page = COMMON_PAGE;
         }
         if (pageSize == null){
-            pageSize = COMMENT_PAGE_SIZE;
+            pageSize = COMMON_PAGE_SIZE;
         }
         PagedGridResult searchItems = itemService.searchItemsByThirdCat(catId,sort,page,pageSize);
 

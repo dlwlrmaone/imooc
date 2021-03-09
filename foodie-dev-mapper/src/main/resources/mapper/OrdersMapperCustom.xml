@@ -9,7 +9,7 @@
     <result column="postAmount" property="postAmount" />
     <result column="orderStatus" property="orderStatus" />
 
-    <collection property="subOrderItemList" ofType="com.imooc.pojo.vo.MySubOrderItemVO">
+    <collection property="subOrderItemList" select="getSubItems" column="orderId" ofType="com.imooc.pojo.vo.MySubOrderItemVO">
       <id column="itemId" property="itemId" />
       <result column="itemName" property="itemName" />
       <result column="itemImg" property="itemImg" />
@@ -22,19 +22,22 @@
 
   <select id="getMyOrders" parameterType="map" resultMap="myOrdersVO">
     SELECT od.id orderId,od.created_time createdTime,od.pay_method payMethod,
-    od.real_pay_amount realPayAmount,od.post_amount postAmount,os.order_status orderStatus,
-    oi.item_id itemId,oi.item_name itemName,oi.item_img itemImg,oi.item_spec_id itemSpecId,
-    oi.item_spec_name itemSpecName,oi.buy_counts buyCounts,oi.price price
+    od.real_pay_amount realPayAmount,od.post_amount postAmount,os.order_status orderStatus
     FROM orders od
     LEFT JOIN order_status os
     ON od.id = os.order_id
-    LEFT JOIN order_items oi
-    ON od.id = oi.order_id
-    WHERE od.user_id = #{paramMap.userId}
+    WHERE od.user_id = #{paramsMap.userId}
     AND od.is_delete = 0
-    <if test="paramMap.orderStatus != null">
-      AND os.order_status = #{paramMap.orderStatus}
+    <if test="paramsMap.orderStatus != null">
+      AND os.order_status = #{paramsMap.orderStatus}
     </if>
     ORDER BY od.updated_time ASC
+  </select>
+
+  <select id="getSubItems" parameterType="string" resultType="com.imooc.pojo.vo.MySubOrderItemVO">
+    SELECT oi.item_id itemId,oi.item_name itemName,oi.item_img itemImg,oi.item_spec_id itemSpecId,
+    oi.item_spec_name itemSpecName,oi.buy_counts buyCounts,oi.price price
+    FROM order_items oi
+    WHERE oi.order_id = #{orderId}
   </select>
 </mapper>

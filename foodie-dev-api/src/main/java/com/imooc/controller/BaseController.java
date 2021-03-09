@@ -11,10 +11,10 @@ public class BaseController {
     public static final String FOODIE_SHOPCART = "shopcart";
 
     //默认每页显示的评论数量
-    public static final Integer COMMENT_PAGE_SIZE = 10;
+    public static final Integer COMMON_PAGE_SIZE = 10;
 
     //默认显示第几页
-    public static final Integer COMMENT_PAGE = 1;
+    public static final Integer COMMON_PAGE = 1;
 
     //支付中心调用地址
     String payUrl = "http://payment.t.mukewang.com/foodie-payment/payment/createMerchantOrder";
