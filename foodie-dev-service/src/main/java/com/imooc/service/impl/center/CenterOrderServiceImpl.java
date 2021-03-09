@@ -1,24 +1,19 @@
 package com.imooc.service.impl.center;
 
 import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
-import com.imooc.mapper.OrdersMapper;
+import com.imooc.enumclass.OrderStatusEnum;
+import com.imooc.mapper.OrderStatusMapper;
 import com.imooc.mapper.OrdersMapperCustom;
-import com.imooc.mapper.UsersMapper;
-import com.imooc.pojo.Users;
-import com.imooc.pojo.bo.center.CenterUserBO;
+import com.imooc.pojo.OrderStatus;
 import com.imooc.pojo.vo.MyOrdersVO;
-import com.imooc.service.BaseService;
 import com.imooc.service.center.CenterOrderService;
-import com.imooc.service.center.CenterUserService;
 import com.imooc.service.impl.BaseServiceImpl;
 import com.imooc.utils.PagedGridResult;
-import org.n3r.idworker.Sid;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import tk.mybatis.mapper.entity.Example;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -33,6 +28,17 @@ public class CenterOrderServiceImpl extends BaseServiceImpl implements CenterOrd
     @Autowired
     public OrdersMapperCustom ordersMapperCustom;
 
+    @Autowired
+    public OrderStatusMapper orderStatusMapper;
+
+    /**
+     * 用户中心-查询订单信息
+     * @param userId
+     * @param orderStatus
+     * @param page
+     * @param pageSize
+     * @return
+     */
     @Transactional(propagation = Propagation.SUPPORTS)
     @Override
     public PagedGridResult getMyOrderInfo(String userId, Integer orderStatus, Integer page, Integer pageSize) {
@@ -45,6 +51,26 @@ public class CenterOrderServiceImpl extends BaseServiceImpl implements CenterOrd
         PageHelper.startPage(page,pageSize);
         List<MyOrdersVO> myOrders = ordersMapperCustom.getMyOrders(map);
         return setPagedGrid(myOrders,page);
+    }
+
+    /**
+     * 用户中心-修改订单状态 -> 商家发货
+     * @param orderId
+     */
+    @Transactional(propagation=Propagation.REQUIRED)
+    @Override
+    public void updateDeliverOrderStatus(String orderId) {
+
+        OrderStatus updateOrder = new OrderStatus();
+        updateOrder.setOrderStatus(OrderStatusEnum.WAIT_RECEIVE.type);
+        updateOrder.setDeliverTime(new Date());
+
+        Example example = new Example(OrderStatus.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("orderId", orderId);
+        criteria.andEqualTo("orderStatus", OrderStatusEnum.WAIT_DELIVER.type);
+
+        orderStatusMapper.updateByExampleSelective(updateOrder, example);
     }
 
 }

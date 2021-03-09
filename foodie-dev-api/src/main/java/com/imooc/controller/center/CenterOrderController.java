@@ -62,4 +62,18 @@ public class CenterOrderController extends BaseController {
         return IMOOCJSONResult.ok(orderInfo);
     }
 
+    //商家发货没有后端对接，该接口仅为模拟
+    @ApiOperation(value = "商家发货",notes = "模拟商家发货功能",httpMethod = "GET")
+    @GetMapping("/deliver")
+    public IMOOCJSONResult deliver(
+            @ApiParam(name = "orderId", value = "订单id", required = true)
+            @RequestParam String orderId) throws Exception {
+
+        if (StringUtils.isBlank(orderId)) {
+            return IMOOCJSONResult.errorMsg("订单ID不能为空");
+        }
+        centerOrderService.updateDeliverOrderStatus(orderId);
+        return IMOOCJSONResult.ok();
+    }
+
 }
