@@ -2,9 +2,12 @@ package com.imooc.service.impl.center;
 
 import com.github.pagehelper.PageHelper;
 import com.imooc.enumclass.OrderStatusEnum;
+import com.imooc.enumclass.YesOrNo;
 import com.imooc.mapper.OrderStatusMapper;
+import com.imooc.mapper.OrdersMapper;
 import com.imooc.mapper.OrdersMapperCustom;
 import com.imooc.pojo.OrderStatus;
+import com.imooc.pojo.Orders;
 import com.imooc.pojo.vo.MyOrdersVO;
 import com.imooc.service.center.CenterOrderService;
 import com.imooc.service.impl.BaseServiceImpl;
@@ -31,8 +34,11 @@ public class CenterOrderServiceImpl extends BaseServiceImpl implements CenterOrd
     @Autowired
     public OrderStatusMapper orderStatusMapper;
 
+    @Autowired
+    public OrdersMapper ordersMapper;
+
     /**
-     * 用户中心-查询订单信息
+     * 用户中心-订单信息展示
      * @param userId
      * @param orderStatus
      * @param page
@@ -71,6 +77,67 @@ public class CenterOrderServiceImpl extends BaseServiceImpl implements CenterOrd
         criteria.andEqualTo("orderStatus", OrderStatusEnum.WAIT_DELIVER.type);
 
         orderStatusMapper.updateByExampleSelective(updateOrder, example);
+    }
+
+    /**
+     * 订单收货前验证，查询订单
+     * @param userId
+     * @param orderId
+     * @return
+     */
+    @Transactional(propagation = Propagation.SUPPORTS)
+    @Override
+    public Orders getMyOrder(String userId, String orderId) {
+
+        Orders orders = new Orders();
+        orders.setId(orderId);
+        orders.setUserId(userId);
+        orders.setIsDelete(YesOrNo.NO.type);
+
+        return ordersMapper.selectOne(orders);
+    }
+
+    /**
+     * 更新订单状态 -> 确认收货
+     * @param orderId
+     * @return
+     */
+    @Transactional(propagation=Propagation.REQUIRED)
+    @Override
+    public Boolean UpdateReceiveOrderStatus(String orderId) {
+
+        OrderStatus orderStatus = new OrderStatus();
+        orderStatus.setOrderStatus(OrderStatusEnum.SUCCESS.type);
+        orderStatus.setSuccessTime(new Date());
+
+        Example example = new Example(OrderStatus.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("orderId",orderId);
+        criteria.andEqualTo("orderStatus",OrderStatusEnum.WAIT_RECEIVE.type);
+        int result = orderStatusMapper.updateByExampleSelective(orderStatus, example);
+        return result == 1 ? true : false;
+    }
+
+    /**
+     * 删除订单 -> 逻辑删除
+     * @param orderId
+     * @param userId
+     * @return
+     */
+    @Transactional(propagation=Propagation.REQUIRED)
+    @Override
+    public Boolean deleteMyOrders(String orderId, String userId) {
+
+        Orders orders = new Orders();
+        orders.setIsDelete(YesOrNo.YES.type);
+        orders.setUpdatedTime(new Date());
+
+        Example example = new Example(Orders.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("id",orderId);
+        criteria.andEqualTo("userId",userId);
+        int result = ordersMapper.updateByExampleSelective(orders, example);
+        return result == 1 ? true : false;
     }
 
 }

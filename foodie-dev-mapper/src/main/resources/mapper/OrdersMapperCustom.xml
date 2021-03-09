@@ -5,6 +5,7 @@
     <id column="orderId" property="orderId" />
     <result column="createdTime" property="createdTime" />
     <result column="payMethod" property="payMethod" />
+    <result column="isComment" property="isComment" />
     <result column="realPayAmount" property="realPayAmount" />
     <result column="postAmount" property="postAmount" />
     <result column="orderStatus" property="orderStatus" />
@@ -21,7 +22,7 @@
   </resultMap>
 
   <select id="getMyOrders" parameterType="map" resultMap="myOrdersVO">
-    SELECT od.id orderId,od.created_time createdTime,od.pay_method payMethod,
+    SELECT od.id orderId,od.created_time createdTime,od.pay_method payMethod,od.is_comment isComment,
     od.real_pay_amount realPayAmount,od.post_amount postAmount,os.order_status orderStatus
     FROM orders od
     LEFT JOIN order_status os

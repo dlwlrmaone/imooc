@@ -42,7 +42,7 @@ public class CenterUserController extends BaseController {
     @Autowired
     public FileUpload fileUpload;
 
-    @ApiOperation(value = "用户头像修改上传",notes = "通过用户ID修改上传用户头像",httpMethod = "POST")
+    @ApiOperation(value = "用户中心-用户头像上传",notes = "通过用户ID修改上传用户头像",httpMethod = "POST")
     @PostMapping("/uploadFace")
     public IMOOCJSONResult uploadFace(
             @ApiParam(name = "userId",value = "用户ID",required = true) @RequestParam String userId,
@@ -121,7 +121,7 @@ public class CenterUserController extends BaseController {
         return IMOOCJSONResult.ok();
     }
 
-    @ApiOperation(value = "修改用户信息",notes = "通过用户ID修改用户中心的用户信息",httpMethod = "POST")
+    @ApiOperation(value = "用户中心-修改用户信息",notes = "通过用户ID修改用户中心的用户信息",httpMethod = "POST")
     @PostMapping("/update")
     public IMOOCJSONResult updateCenterUserInfo(
             @ApiParam(name = "userId",value = "用户ID",required = true) @RequestParam String userId,
