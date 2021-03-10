@@ -44,7 +44,7 @@ public class CenterOrderController extends BaseController {
 
     @ApiOperation(value = "用户中心-查询订单",notes = "根据用户id获取订单列表信息",httpMethod = "POST")
     @PostMapping("/query")
-    public IMOOCJSONResult getComments(
+    public IMOOCJSONResult getOrders(
             @ApiParam(name = "userId",value = "用户ID",required = true) @RequestParam String userId,
             @ApiParam(name = "orderStatus",value = "订单状态",required = false) @RequestParam Integer orderStatus,
             @ApiParam(name = "page",value = "查询下一页的第几页",required = false) @RequestParam Integer page,
@@ -111,19 +111,6 @@ public class CenterOrderController extends BaseController {
             return IMOOCJSONResult.errorMsg("订单删除失败，请联系商户管理员核实处理！");
         }
 
-        return IMOOCJSONResult.ok();
-    }
-
-    /**
-     * 用户订单验证，防止非法用户请求
-     * @return
-     */
-    private IMOOCJSONResult checkUserOrder(String userId,String orderId){
-
-        Orders myOrder = centerOrderService.getMyOrder(userId, orderId);
-        if (myOrder == null) {
-            return IMOOCJSONResult.errorMsg("该用户下订单不存在，请核实用户！");
-        }
         return IMOOCJSONResult.ok();
     }
 

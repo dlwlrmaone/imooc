@@ -229,7 +229,7 @@ public class ItemServiceImpl extends BaseServiceImpl implements ItemService {
     public String getItemMainImgById(String itemId) {
 
         ItemsImg itemsImg = new ItemsImg();
-        itemsImg.setId(itemId);
+        itemsImg.setItemId(itemId);
         itemsImg.setIsMain(YesOrNo.YES.type);
         ItemsImg mainImg = itemsImgMapper.selectOne(itemsImg);
 
