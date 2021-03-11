@@ -9,6 +9,7 @@ import com.imooc.mapper.OrdersMapperCustom;
 import com.imooc.pojo.OrderStatus;
 import com.imooc.pojo.Orders;
 import com.imooc.pojo.vo.MyOrdersVO;
+import com.imooc.pojo.vo.center.OrderStatusCountsVO;
 import com.imooc.service.center.CenterOrderService;
 import com.imooc.service.impl.BaseServiceImpl;
 import com.imooc.utils.PagedGridResult;
@@ -138,6 +139,36 @@ public class CenterOrderServiceImpl extends BaseServiceImpl implements CenterOrd
         criteria.andEqualTo("userId",userId);
         int result = ordersMapper.updateByExampleSelective(orders, example);
         return result == 1 ? true : false;
+    }
+
+    /**
+     * 查询用户中心订单状态数
+     * @param userId
+     */
+    @Transactional(propagation = Propagation.SUPPORTS)
+    @Override
+    public OrderStatusCountsVO getOrderStatusCounts(String userId) {
+
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("userId",userId);
+        //查询待付款订单数量
+        map.put("orderStatus",OrderStatusEnum.WAIT_PAY.type);
+        int waitPayCounts = ordersMapperCustom.getMyOrderStatusCounts(map);
+        //查询已付款(待发货)订单数量
+        map.put("orderStatus",OrderStatusEnum.WAIT_DELIVER.type);
+        int waitDeliverCounts = ordersMapperCustom.getMyOrderStatusCounts(map);
+        //查询已发货（待收货）订单数量
+        map.put("orderStatus",OrderStatusEnum.WAIT_RECEIVE.type);
+        int waitReceiveCounts = ordersMapperCustom.getMyOrderStatusCounts(map);
+        //查询交易成功（有可能是待评价）订单数量
+        map.put("orderStatus",OrderStatusEnum.SUCCESS.type);
+        map.put("isComment",YesOrNo.NO.type);
+        int waitCommentCounts = ordersMapperCustom.getMyOrderStatusCounts(map);
+        OrderStatusCountsVO statusCountsVO = new OrderStatusCountsVO(
+                waitPayCounts,waitDeliverCounts,waitReceiveCounts,waitCommentCounts);
+
+        return statusCountsVO;
+
     }
 
 }

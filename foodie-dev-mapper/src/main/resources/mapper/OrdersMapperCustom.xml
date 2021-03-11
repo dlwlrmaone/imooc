@@ -41,4 +41,16 @@
     FROM order_items oi
     WHERE oi.order_id = #{orderId}
   </select>
+
+  <select id="getMyOrderStatusCounts" parameterType="map" resultType="int">
+    SELECT COUNT(1)
+    FROM orders o
+    LEFT JOIN order_status os
+    ON o.id = os.order_id
+    WHERE o.user_id = #{paramsMap.userId}
+    AND os.order_status = #{paramsMap.orderStatus}
+    <if test="paramsMap.isComment != null">
+    AND o.is_comment = #{paramsMap.isComment}
+    </if>
+  </select>
 </mapper>

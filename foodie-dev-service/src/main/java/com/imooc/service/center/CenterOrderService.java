@@ -1,6 +1,7 @@
 package com.imooc.service.center;
 
 import com.imooc.pojo.Orders;
+import com.imooc.pojo.vo.center.OrderStatusCountsVO;
 import com.imooc.utils.PagedGridResult;
 
 /**
@@ -41,5 +42,11 @@ public interface CenterOrderService {
      * @return
      */
     Boolean deleteMyOrders(String orderId,String userId);
+
+    /**
+     * 查询用户订单状态数
+     * @param userId
+     */
+    OrderStatusCountsVO getOrderStatusCounts(String userId);
 
 }

@@ -15,4 +15,10 @@ public interface OrdersMapperCustom {
      */
     List<MyOrdersVO> getMyOrders(@Param("paramsMap") Map<String, Object> map);
 
+    /**
+     * 获取用户中心我的订单状态数量
+     * @param map
+     * @return
+     */
+    int getMyOrderStatusCounts(@Param("paramsMap") Map<String,Object> map);
 }
