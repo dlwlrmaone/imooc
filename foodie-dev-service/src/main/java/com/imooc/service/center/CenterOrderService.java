@@ -49,4 +49,11 @@ public interface CenterOrderService {
      */
     OrderStatusCountsVO getOrderStatusCounts(String userId);
 
+    /**
+     * 用户中心-我的订单动向展示
+     * @param userId
+     * @return
+     */
+    PagedGridResult getMyOrderTrend(String userId,Integer page,Integer pageSize);
+
 }

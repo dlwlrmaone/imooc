@@ -171,4 +171,22 @@ public class CenterOrderServiceImpl extends BaseServiceImpl implements CenterOrd
 
     }
 
+    /**
+     * 用户中心-我的订单动向展示
+     * @param userId
+     * @param page
+     * @param pageSize
+     * @return
+     */
+    @Transactional(propagation = Propagation.SUPPORTS)
+    @Override
+    public PagedGridResult getMyOrderTrend(String userId, Integer page, Integer pageSize) {
+
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("userId",userId);
+        PageHelper.startPage(page,pageSize);
+        List<OrderStatus> myOrderTrend = ordersMapperCustom.getMyOrderTrend(map);
+        return setPagedGrid(myOrderTrend,page);
+    }
+
 }

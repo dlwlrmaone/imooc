@@ -108,4 +108,25 @@ public class CenterOrderController extends BaseController {
         return IMOOCJSONResult.ok(statusCounts);
     }
 
+    @ApiOperation(value = "用户中心-我的订单动向展示",notes = "获取我的订单动向，并且展示",httpMethod = "POST")
+    @PostMapping("/trend")
+    public IMOOCJSONResult getMyOrderTrend(
+            @ApiParam(name = "userId", value = "用户id", required = true) @RequestParam String userId,
+            @ApiParam(name = "page",value = "查询下一页的第几页",required = false) @RequestParam Integer page,
+            @ApiParam(name = "pageSize",value = "每一页显示的记录数",required = false) @RequestParam Integer pageSize) {
+
+        if (StringUtils.isBlank(userId)){
+            return IMOOCJSONResult.errorMsg("该用户ID不存在！");
+        }
+        if (page == null){
+            page = COMMON_PAGE;
+        }
+        if (pageSize == null){
+            pageSize = COMMON_PAGE_SIZE;
+        }
+        PagedGridResult orderTrend = centerOrderService.getMyOrderTrend(userId,page,pageSize);
+
+        return IMOOCJSONResult.ok(orderTrend);
+    }
+
 }
