@@ -10,6 +10,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>foodie-dev-api</artifactId>
+    <!--打war包，第一步-->
+    <packaging>war</packaging>
 
     <!--api -> service -> mapper -> pojo -> common-->
     <dependencies>
@@ -24,6 +26,5 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
 
 </project>

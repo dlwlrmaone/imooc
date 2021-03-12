@@ -26,8 +26,8 @@ public class BaseController {
     //支付中心调用地址
     String payUrl = "http://payment.t.mukewang.com/foodie-payment/payment/createMerchantOrder";
 
-    //支付中心-》天天吃货后台，支付成功回调地址（natapp实现内网穿透，公网地址随时会变）
-    String payReturnUrl = "http://7c35yq.natappfree.cc/orders/notifyMerchantOrderPaid";
+    //支付中心 -> 天天吃货后台，支付成功回调地址（natapp实现内网穿透，公网地址随时会变）
+    String payReturnUrl = "http://47.113.217.116:8088/foodie-dev-api/orders/notifyMerchantOrderPaid";
 
     //用户头像上传的地址
     public static final String USER_FACE_LOCATION = File.separator + "Users" + File.separator + "dlwlrmaone"

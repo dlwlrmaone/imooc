@@ -31,8 +31,7 @@ spring:
 mybatis:
   type-aliases-package: com.imooc.pojo # 所有POJO类所在包路径
   mapper-locations: classpath:mapper/*.xml # mapper映射文件
-  configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl #日志sql打印在控制台
+
 # mybatis mapper 配置
 # 通用 Mapper 配置
 mapper:
@@ -42,7 +41,7 @@ mapper:
 
 # 自定义日志路径配置
 logback:
-  logdir: /Users/dlwlrmaone/logs/foodie_log
+  logdir: /usr/dlwlrmaone/logs/foodie_log
 
 #分页插件配置
 pagehelper:

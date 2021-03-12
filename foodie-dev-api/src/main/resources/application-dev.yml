@@ -52,4 +52,4 @@ pagehelper:
 #定时任务配置
 autoCloseOrder:
   task:
-    timerTask: "0/3 * * * * ?"
+    timerTask: "0 0 0/1 * * ?"

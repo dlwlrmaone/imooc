@@ -20,6 +20,9 @@ public class CorsConfig {
         corsConfig.addAllowedHeader("*");
         corsConfig.addAllowedMethod("*");
         corsConfig.addAllowedOrigin("http://localhost:8080");
+        corsConfig.addAllowedOrigin("http://47.113.217.116:8080");
+        corsConfig.addAllowedOrigin("http://47.113.217.116:8088");
+        corsConfig.addAllowedOrigin("http://47.113.217.116");
         corsConfig.setAllowCredentials(true);//设置是否发送cookie信息
         //为url提供映射路径
         UrlBasedCorsConfigurationSource corsConfigSource = new UrlBasedCorsConfigurationSource();
