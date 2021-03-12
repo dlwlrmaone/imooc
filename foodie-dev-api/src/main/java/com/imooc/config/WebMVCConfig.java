@@ -17,7 +17,7 @@ public class WebMVCConfig implements WebMvcConfigurer {
         registry.addResourceHandler("/**")
                 //映射swagger2
                 .addResourceLocations("classpath:/META-INF/resources/")
-                //映射本地静态资源
+                //映射本地静态资源(dev)
                 .addResourceLocations("file:/Users/dlwlrmaone/Downloads/foodie_docs/");
 
     }

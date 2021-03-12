@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @ConfigurationProperties(prefix = "file.face")
-@PropertySource("classpath:file-upload-prd.properties")
+@PropertySource("classpath:file-upload-dev.properties")
 public class FileUpload {
 
     private String userFaceLocation;

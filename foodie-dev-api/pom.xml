@@ -10,8 +10,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>foodie-dev-api</artifactId>
-    <!--打war包，第一步-->
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
+    <!--打war包，第1步-->
+<!--    <packaging>war</packaging>-->
 
     <!--api -> service -> mapper -> pojo -> common-->
     <dependencies>
