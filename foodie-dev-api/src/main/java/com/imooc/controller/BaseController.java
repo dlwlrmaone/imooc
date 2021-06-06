@@ -3,11 +3,13 @@ package com.imooc.controller;
 import com.imooc.pojo.Orders;
 import com.imooc.service.center.CenterOrderService;
 import com.imooc.utils.IMOOCJSONResult;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import java.io.File;
 
+@Api(value = "基础Controller",tags = "提供基础常量和通用方法")
 @Controller
 public class BaseController {
 
