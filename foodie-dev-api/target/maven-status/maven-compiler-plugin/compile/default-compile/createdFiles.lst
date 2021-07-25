@@ -18,5 +18,6 @@ com/imooc/controller/BaseController.class
 com/imooc/controller/ShopCartController.class
 com/imooc/config/OrderTask.class
 com/imooc/controller/HelloController.class
+com/imooc/controller/RedisController.class
 com/imooc/controller/StuFooController.class
 com/imooc/exception/CustomExceptionHandler.class

@@ -2,6 +2,7 @@
 /Users/dlwlrmaone/IdeaProjects/imooc/foodie-dev-common/src/main/java/org/n3r/idworker/Id.java
 /Users/dlwlrmaone/IdeaProjects/imooc/foodie-dev-common/src/main/java/org/n3r/idworker/strategy/FileLock.java
 /Users/dlwlrmaone/IdeaProjects/imooc/foodie-dev-common/src/main/java/com/imooc/enumclass/SexEnum.java
+/Users/dlwlrmaone/IdeaProjects/imooc/foodie-dev-common/src/main/java/com/imooc/utils/RedisOperator.java
 /Users/dlwlrmaone/IdeaProjects/imooc/foodie-dev-common/src/main/java/com/imooc/enumclass/YesOrNo.java
 /Users/dlwlrmaone/IdeaProjects/imooc/foodie-dev-common/src/main/java/org/n3r/idworker/utils/IPv4Utils.java
 /Users/dlwlrmaone/IdeaProjects/imooc/foodie-dev-common/src/main/java/org/n3r/idworker/Code.java
@@ -17,15 +18,18 @@
 /Users/dlwlrmaone/IdeaProjects/imooc/foodie-dev-common/src/main/java/com/imooc/utils/JsonUtils.java
 /Users/dlwlrmaone/IdeaProjects/imooc/foodie-dev-common/src/main/java/org/n3r/idworker/utils/Serializes.java
 /Users/dlwlrmaone/IdeaProjects/imooc/foodie-dev-common/src/main/java/org/n3r/idworker/Test.java
+/Users/dlwlrmaone/IdeaProjects/imooc/foodie-dev-common/src/main/java/com/imooc/utils/DownLoadPdfUtils2.java
 /Users/dlwlrmaone/IdeaProjects/imooc/foodie-dev-common/src/main/java/org/n3r/idworker/Sid.java
 /Users/dlwlrmaone/IdeaProjects/imooc/foodie-dev-common/src/main/java/com/imooc/enumclass/CommentLevelEnum.java
 /Users/dlwlrmaone/IdeaProjects/imooc/foodie-dev-common/src/main/java/com/imooc/utils/CookieUtils.java
 /Users/dlwlrmaone/IdeaProjects/imooc/foodie-dev-common/src/main/java/com/imooc/utils/MobileEmailUtils.java
 /Users/dlwlrmaone/IdeaProjects/imooc/foodie-dev-common/src/main/java/org/n3r/idworker/utils/Ip.java
+/Users/dlwlrmaone/IdeaProjects/imooc/foodie-dev-common/src/main/java/com/imooc/utils/DownLoadPdfUtils.java
 /Users/dlwlrmaone/IdeaProjects/imooc/foodie-dev-common/src/main/java/com/imooc/utils/MD5Utils.java
 /Users/dlwlrmaone/IdeaProjects/imooc/foodie-dev-common/src/main/java/com/imooc/enumclass/PayMethodEnum.java
 /Users/dlwlrmaone/IdeaProjects/imooc/foodie-dev-common/src/main/java/org/n3r/idworker/utils/HttpReq.java
 /Users/dlwlrmaone/IdeaProjects/imooc/foodie-dev-common/src/main/java/org/n3r/idworker/utils/Props.java
+/Users/dlwlrmaone/IdeaProjects/imooc/foodie-dev-common/src/main/java/com/imooc/utils/ZipUtils.java
 /Users/dlwlrmaone/IdeaProjects/imooc/foodie-dev-common/src/main/java/com/imooc/enumclass/OrderStatusEnum.java
 /Users/dlwlrmaone/IdeaProjects/imooc/foodie-dev-common/src/main/java/com/imooc/utils/PagedGridResult.java
 /Users/dlwlrmaone/IdeaProjects/imooc/foodie-dev-common/src/main/java/org/n3r/idworker/InvalidSystemClock.java

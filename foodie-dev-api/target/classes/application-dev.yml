@@ -1,6 +1,6 @@
 # web访问端口号  约定8088
 server:
-  port: 8088
+  port: 8089
   tomcat:
     uri-encoding: UTF-8
   max-http-header-size: 80KB
@@ -26,6 +26,12 @@ spring:
     multipart:
       max-file-size: 10MB #设置单个文件的大小
       max-request-size: 100MB #设置单次请求文件的总大小
+  redis:
+    password: space5213
+    database: 1
+    #本地虚拟机IP
+    host: 192.168.194.2
+    port: 6379
 
 # mybatis 配置
 mybatis:

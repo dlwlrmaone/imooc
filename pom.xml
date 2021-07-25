@@ -131,6 +131,11 @@
             <artifactId>pagehelper-spring-boot-starter</artifactId>
             <version>1.2.12</version>
         </dependency>
+        <!--Redis-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
 <!--        &lt;!&ndash;打war包，第3步，添加依赖&ndash;&gt;-->
 <!--        <dependency>-->
 <!--            <groupId>javax.servlet</groupId>-->

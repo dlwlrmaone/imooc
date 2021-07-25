@@ -4,6 +4,7 @@ org/n3r/idworker/strategy/DefaultRandomCodeStrategy.class
 org/n3r/idworker/strategy/DefaultWorkerIdStrategy$2.class
 org/n3r/idworker/utils/Ip.class
 com/imooc/utils/DesensitizationUtil.class
+com/imooc/utils/RedisOperator.class
 com/imooc/utils/MobileEmailUtils.class
 org/n3r/idworker/RandomCodeStrategy.class
 org/n3r/idworker/utils/Serializes.class
@@ -12,8 +13,10 @@ com/imooc/utils/DateUtil.class
 org/n3r/idworker/WorkerIdStrategy.class
 org/n3r/idworker/InvalidSystemClock.class
 com/imooc/enumclass/OrderStatusEnum.class
+com/imooc/utils/DownLoadPdfUtils.class
 org/n3r/idworker/Code.class
 org/n3r/idworker/utils/IPv4Utils.class
+com/imooc/utils/ZipUtils.class
 org/n3r/idworker/strategy/DefaultRandomCodeStrategy$1.class
 org/n3r/idworker/IdWorker.class
 com/imooc/utils/CookieUtils.class
@@ -33,6 +36,8 @@ com/imooc/utils/PagedGridResult.class
 org/n3r/idworker/strategy/DayPrefixRandomCodeStrategy.class
 org/n3r/idworker/Id.class
 org/n3r/idworker/Sid.class
+com/imooc/utils/DownLoadPdfUtils2.class
 org/n3r/idworker/Sid$1.class
 org/n3r/idworker/strategy/DefaultWorkerIdStrategy$1.class
 org/n3r/idworker/strategy/DefaultWorkerIdStrategy.class
+com/imooc/utils/RedisOperator$1.class
