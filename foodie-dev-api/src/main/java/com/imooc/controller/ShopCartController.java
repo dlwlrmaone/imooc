@@ -73,15 +73,30 @@ public class ShopCartController extends BaseController{
     }
 
     @ApiOperation(value = "删除购物车商品",notes = "同步删除用户登录后的购物车商品",httpMethod = "GET")
-    @GetMapping("/del")
+    @PostMapping("/del")
     public IMOOCJSONResult delShopCart(
-            @RequestParam String userId, @RequestBody String itemSpecId,
+            @RequestParam String userId, @RequestParam String itemSpecId,
             HttpServletRequest request, HttpServletResponse response){
 
         if (StringUtils.isBlank(userId)){
             return IMOOCJSONResult.errorMsg("该用户ID不存在！");
         }
-        //TODO 用户登录后，删除购物车商品，通过Redis来同步删除对应购物车数据
+        //用户登录后，删除购物车商品，通过Redis来同步删除对应购物车数据
+        String shopCartJson = redisOperator.get(FOODIE_SHOPCART + ":" + userId);
+        //redis中已经有购物车
+        if (StringUtils.isNotBlank(shopCartJson)){
+            List<ShopCartBO> shopCartBOList = JsonUtils.jsonToList(shopCartJson,ShopCartBO.class);
+            for (ShopCartBO sc : shopCartBOList) {
+                String tmpSpecId = sc.getSpecId();
+                //存在已有商品，进行删除
+                if (tmpSpecId.equals(itemSpecId)){
+                    shopCartBOList.remove(sc);
+                    break;
+                }
+            }
+            //覆盖现有redis中的购物车
+            redisOperator.set(FOODIE_SHOPCART + ":" + userId,JsonUtils.objectToJson(shopCartBOList));
+        }
 
         return IMOOCJSONResult.ok();
     }
