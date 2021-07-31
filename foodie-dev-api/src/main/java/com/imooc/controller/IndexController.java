@@ -102,11 +102,11 @@ public class IndexController {
         if (rootCatId == null){
             return IMOOCJSONResult.errorMsg("一级分类不存在！");
         }
-        String subCategoryString = redisOperator.get("subCategories");
+        String subCategoryString = redisOperator.get("subCategories:" + rootCatId);
         if (StringUtils.isBlank(subCategoryString)){
             subCategories = categoryService.getSubCatList(rootCatId);
             //将查到的分类数据放入redis
-            redisOperator.set("subCategories", JsonUtils.objectToJson(subCategories));
+            redisOperator.set("subCategories:" + rootCatId, JsonUtils.objectToJson(subCategories));
         }else {
             subCategories = JsonUtils.jsonToList(subCategoryString, CategoryVO.class);
         }
