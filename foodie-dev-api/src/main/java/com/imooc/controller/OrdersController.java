@@ -3,14 +3,18 @@ package com.imooc.controller;
 import com.imooc.enumclass.OrderStatusEnum;
 import com.imooc.enumclass.PayMethodEnum;
 import com.imooc.pojo.OrderStatus;
+import com.imooc.pojo.bo.ShopCartBO;
 import com.imooc.pojo.bo.SubmitOrderBO;
 import com.imooc.pojo.vo.MerchantOrderVO;
 import com.imooc.pojo.vo.OrderVO;
 import com.imooc.service.OrdersService;
 import com.imooc.utils.IMOOCJSONResult;
+import com.imooc.utils.JsonUtils;
+import com.imooc.utils.RedisOperator;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +24,7 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  * 订单Controller
@@ -37,6 +42,9 @@ public class OrdersController extends BaseController{
     @Autowired
     private RestTemplate restTemplate;
 
+    @Autowired
+    private RedisOperator redisOperator;
+
     @ApiOperation(value = "订单创建",notes = "创建该用户下的相关订单信息",httpMethod = "POST")
     @PostMapping("/create")
     public IMOOCJSONResult createOrders(
@@ -49,8 +57,14 @@ public class OrdersController extends BaseController{
             return IMOOCJSONResult.errorMsg("该支付方式不支持！");
         }
 
+        String shopCartJson = redisOperator.get(FOODIE_SHOPCART + ":" + submitOrderBO.getUserId());
+        if (StringUtils.isBlank(shopCartJson)){
+            return IMOOCJSONResult.errorMsg("购物车数据不正确！");
+        }
+        List<ShopCartBO> shopCartList = JsonUtils.jsonToList(shopCartJson, ShopCartBO.class);
+
         //1.创建订单
-        OrderVO orderVO = ordersService.createOrders(submitOrderBO);
+        OrderVO orderVO = ordersService.createOrders(shopCartList, submitOrderBO);
 
         //2.创建订单后，移除购物车中已提交（结算）的商品
         // TODO 整合redis之后，完善购物车上的库存商品清除，并同步到前端的cookie

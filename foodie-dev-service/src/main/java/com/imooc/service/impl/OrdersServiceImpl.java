@@ -6,6 +6,7 @@ import com.imooc.mapper.OrderItemsMapper;
 import com.imooc.mapper.OrderStatusMapper;
 import com.imooc.mapper.OrdersMapper;
 import com.imooc.pojo.*;
+import com.imooc.pojo.bo.ShopCartBO;
 import com.imooc.pojo.bo.SubmitOrderBO;
 import com.imooc.pojo.vo.MerchantOrderVO;
 import com.imooc.pojo.vo.OrderVO;
@@ -53,7 +54,7 @@ public class OrdersServiceImpl implements OrdersService {
      */
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
-    public OrderVO createOrders(SubmitOrderBO submitOrderBO) {
+    public OrderVO createOrders(List<ShopCartBO> shopCartList,SubmitOrderBO submitOrderBO) {
 
         String userId = submitOrderBO.getUserId();
         String addressId = submitOrderBO.getAddressId();
@@ -89,8 +90,9 @@ public class OrdersServiceImpl implements OrdersService {
         //2.循环根据itemSpecIds保存订单商品信息表
         String[] specIds = itemSpecIds.split(",");
         for (String itemSpecId : specIds) {
-            //TODO 整合redis后，商品购买后的数量重新从redis的购物车中获取
-            Integer buyCounts = 1;
+            //整合redis后，商品购买后的数量重新从redis的购物车中获取
+            ShopCartBO shopCartItem = getBuyCountsFromShopCart(shopCartList, itemSpecId);
+            Integer buyCounts = shopCartItem.getBuyCounts();
 
             //根据规格id，查询规格的具体信息，主要是价格
             ItemsSpec itemsSpec = itemService.getItemByItemSpecId(itemSpecId);
@@ -143,6 +145,21 @@ public class OrdersServiceImpl implements OrdersService {
         orderVO.setOrderId(orderId);
 
         return orderVO;
+    }
+
+    /**
+     * 从redis中获取购物车中商品
+     * @param shopCartBOList
+     * @return
+     */
+    private ShopCartBO getBuyCountsFromShopCart(List<ShopCartBO> shopCartBOList,String specId){
+
+        for (ShopCartBO sc : shopCartBOList) {
+            if (sc.getSpecId().equals(specId)){
+                return sc;
+            }
+        }
+        return null;
     }
 
     /**
